@@ -456,7 +456,7 @@
                     <button class="dropdown-item" onclick="requestNotificationPermission()">🔔 Activer notifications</button>
                     <button class="dropdown-item" onclick="exportData()">📤 Exporter données</button>
                     <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Importer données</button>
-                    <button class="dropdown-item" onclick="resetToSampleData()">🔄 Reset données</button>
+                    <button class="dropdown-item" onclick="resetAllData()">🧹 Reset complet</button>
                     <button class="dropdown-item" onclick="window.location.reload()">🔄 Actualiser</button>
                 </div>
             </div>
@@ -496,6 +496,7 @@
                     <button class="dropdown-item" onclick="clearFilters()">🧹 Effacer les filtres</button>
                     <button class="dropdown-item" onclick="showAllClients()">👥 Voir tous les clients</button>
                     <button class="dropdown-item" onclick="showPaymentsDue()">💰 Paiements dus</button>
+                    <button class="dropdown-item" onclick="showPaymentHistory()">📜 Historique paiements</button>
                 </div>
             </div>
         </div>
@@ -618,17 +619,20 @@
         // Variables globales
         let sessions = [];
         let recurringSessions = [];
+        let payments = []; // NOUVEAU: Historique des paiements
         let currentDate = new Date();
         let filteredClient = '';
         let dateFilter = { start: null, end: null };
         let notificationsEnabled = false;
 
-        // Sauvegarde et chargement des données
+        // Sauvegarder les données automatiquement
         function saveData() {
             try {
                 const data = {
                     sessions: sessions,
                     recurringSessions: recurringSessions,
+                    payments: payments, // NOUVEAU
+                    notificationsEnabled: notificationsEnabled,
                     lastSaved: new Date().toISOString()
                 };
                 localStorage.setItem('coachingData', JSON.stringify(data));
@@ -638,17 +642,20 @@
             }
         }
 
+        // Charger les données sauvegardées
         function loadData() {
             try {
-                const saved = localStorage.getItem('coachingData');
-                if (saved) {
-                    const data = JSON.parse(saved);
+                const savedData = localStorage.getItem('coachingData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
                     sessions = data.sessions || [];
                     recurringSessions = data.recurringSessions || [];
-                    console.log('📁 Données chargées depuis la sauvegarde');
+                    payments = data.payments || []; // NOUVEAU
+                    notificationsEnabled = data.notificationsEnabled || false;
+                    console.log('📂 Données chargées depuis la sauvegarde');
                     return true;
                 } else {
-                    console.log('🆕 Première utilisation - chargement des données d\'exemple');
+                    console.log('📝 Aucune sauvegarde trouvée, chargement des données d\'exemple');
                     return false;
                 }
             } catch (error) {
@@ -657,15 +664,7 @@
             }
         }
 
-        function resetToSampleData() {
-            if (confirm('⚠️ Êtes-vous sûr de vouloir effacer TOUTES vos données et revenir aux exemples ?\n\nCette action est irréversible !')) {
-                localStorage.removeItem('coachingData');
-                initSampleData();
-                generateStats();
-                generateCalendar();
-                alert('🔄 Données réinitialisées aux exemples !');
-            }
-        }
+        // Initialisation de données d'exemple (seulement si pas de sauvegarde)
         function initSampleData() {
             const sampleSessions = [
                 { id: 1, client: 'Théo', date: '2025-01-15', time: '10:00', type: 'coaching', hasReminder: true },
@@ -683,6 +682,8 @@
                 { id: 1, client: 'Théo', day: 1, time: '10:00', type: 'coaching', startDate: '2025-01-01', endDate: null, active: true }
             ];
             recurringSessions = sampleRecurring;
+            
+            console.log('📝 Données d\'exemple chargées');
         }
 
         // Demander les permissions de notification
@@ -691,6 +692,7 @@
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     notificationsEnabled = true;
+                    saveData(); // Sauvegarder le statut des notifications
                     alert('🎉 Notifications activées ! Vous recevrez des rappels 30 min avant vos séances.');
                     checkForNotifications();
                 } else {
@@ -761,7 +763,9 @@
                         total: 0,
                         currentCycle: 0,
                         filtered: 0,
-                        sessions: []
+                        sessions: [],
+                        completedCycles: 0, // NOUVEAU: Cycles de 10 complétés
+                        unpaidCycles: 0     // NOUVEAU: Cycles non payés
                     };
                 }
                 clientStats[session.client].total++;
@@ -782,8 +786,18 @@
                 }
             });
 
-            // Trier les séances par date décroissante
+            // Calculer les cycles payés/non payés
             Object.keys(clientStats).forEach(client => {
+                const total = clientStats[client].total;
+                const completedCycles = Math.floor(total / 10);
+                clientStats[client].completedCycles = completedCycles;
+                
+                // Vérifier combien de cycles ont été payés
+                const clientPayments = payments.filter(p => p.client === client);
+                const paidCycles = clientPayments.length;
+                clientStats[client].unpaidCycles = completedCycles - paidCycles;
+                
+                // Trier les séances par date décroissante
                 clientStats[client].sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
             });
 
@@ -800,8 +814,18 @@
                 if (!filteredClient || client.toLowerCase().includes(filteredClient.toLowerCase())) {
                     const stats = clientStats[client];
                     const paymentDue = stats.currentCycle === 10;
+                    const hasUnpaidCycles = stats.unpaidCycles > 0;
                     const filteredText = dateFilter.start && dateFilter.end ? 
                         `<p><strong>Période sélectionnée:</strong> ${stats.filtered} séances</p>` : '';
+                    
+                    // NOUVEAU: Informations de paiement
+                    const paymentInfo = stats.completedCycles > 0 ? 
+                        `<div class="client-info">
+                            <span class="client-name">Paiements</span>
+                            <span class="session-count">${stats.completedCycles - stats.unpaidCycles}/${stats.completedCycles}
+                                ${hasUnpaidCycles ? '<span style="color: #dc2626; font-size: 0.8rem;">⚠️ en retard</span>' : ''}
+                            </span>
+                        </div>` : '';
                     
                     html += `
                         <div class="stat-card" onclick="showClientDetails('${client}')">
@@ -818,6 +842,7 @@
                                     </span>
                                 </span>
                             </div>
+                            ${paymentInfo}
                             ${filteredText}
                         </div>
                     `;
@@ -906,12 +931,44 @@
             const stats = getClientStats()[clientName];
             const nextPayment = 10 - (stats.currentCycle === 10 ? 0 : stats.currentCycle);
             
+            // NOUVEAU: Historique des paiements
+            const clientPayments = payments.filter(p => p.client === clientName);
+            clientPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let paymentHistory = '';
+            if (clientPayments.length > 0) {
+                paymentHistory = `
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4>💰 Historique des paiements :</h4>
+                        ${clientPayments.map(p => `
+                            <div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+                                <span>Cycle ${p.cycle} - ${formatDate(p.date)}</span>
+                                <span style="color: #059669; font-weight: bold;">${p.amount || 'Montant non spécifié'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
             let html = `
                 <div style="margin-bottom: 1rem;">
                     <strong>Total de séances:</strong> ${stats.total}<br>
                     <strong>Cycle actuel:</strong> ${stats.currentCycle}/10<br>
+                    <strong>Cycles complétés:</strong> ${stats.completedCycles}<br>
+                    <strong>Cycles payés:</strong> ${stats.completedCycles - stats.unpaidCycles}/${stats.completedCycles}<br>
                     <strong>Prochaine échéance:</strong> ${nextPayment === 0 ? 'Paiement dû maintenant !' : nextPayment + ' séances restantes'}
+                    
+                    ${stats.currentCycle === 10 ? `
+                        <div style="margin-top: 1rem;">
+                            <button onclick="markPaymentReceived('${clientName}')" class="btn btn-success" style="width: 100%;">
+                                💰 Marquer le paiement comme reçu
+                            </button>
+                        </div>
+                    ` : ''}
                 </div>
+                
+                ${paymentHistory}
+                
                 <div class="sessions-list">
                     <h4>Historique des séances (toutes modifiables):</h4>
             `;
@@ -943,7 +1000,7 @@
             
             if (confirm(`Supprimer définitivement la séance de ${session.client} du ${formatDate(session.date)} à ${session.time} ?`)) {
                 sessions = sessions.filter(s => s.id !== sessionId);
-                saveData(); // Sauvegarde automatique
+                saveData(); // Sauvegarder automatiquement
                 generateStats();
                 generateCalendar();
                 
@@ -994,7 +1051,7 @@
                         session.hasReminder = enableReminder;
                         session.notified = false; // Reset le statut de notification
                         
-                        saveData(); // Sauvegarde automatique
+                        saveData(); // Sauvegarder automatiquement
                         generateStats();
                         generateCalendar();
                         showClientDetails(session.client); // Refresh la modale
@@ -1113,19 +1170,100 @@
             toggleDropdown('filterMenu');
         }
 
+        function showPaymentHistory() {
+            if (payments.length === 0) {
+                alert('📜 Aucun paiement enregistré pour le moment.');
+                toggleDropdown('filterMenu');
+                return;
+            }
+            
+            // Trier les paiements par date décroissante
+            const sortedPayments = [...payments].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let message = '📜 HISTORIQUE DES PAIEMENTS :\n\n';
+            
+            sortedPayments.forEach(payment => {
+                message += `• ${payment.client} - ${formatDate(payment.date)}\n`;
+                message += `  Cycle ${payment.cycle} | Montant: ${payment.amount}\n\n`;
+            });
+            
+            // Statistiques globales
+            const totalPayments = payments.length;
+            const totalAmount = payments.reduce((sum, p) => {
+                const amount = parseFloat(p.amount) || 0;
+                return sum + amount;
+            }, 0);
+            
+            message += `📊 RÉSUMÉ :\n`;
+            message += `Total paiements: ${totalPayments}\n`;
+            if (totalAmount > 0) {
+                message += `Montant total: ${totalAmount}€`;
+            }
+            
+            alert(message);
+            toggleDropdown('filterMenu');
+        }
+
         function showPaymentsDue() {
             const clientStats = getClientStats();
+            let message = '';
+            let hasPaymentsDue = false;
+            let hasUnpaidCycles = false;
+            
+            // Paiements du cycle actuel (10e séance atteinte)
             const paymentsDue = Object.keys(clientStats).filter(client => 
                 clientStats[client].currentCycle === 10
             );
             
-            if (paymentsDue.length === 0) {
-                alert('✅ Aucun paiement en attente !');
-            } else {
-                const paymentList = paymentsDue.map(client => `• ${client} (10/10 séances)`).join('\n');
-                alert(`💰 Paiements en attente :\n\n${paymentList}`);
+            if (paymentsDue.length > 0) {
+                hasPaymentsDue = true;
+                message += '💰 PAIEMENTS DUS (cycle actuel) :\n\n';
+                paymentsDue.forEach(client => {
+                    message += `• ${client} (10/10 séances - paiement dû)\n`;
+                });
+                message += '\n';
             }
+            
+            // Cycles précédents non payés
+            const unpaidCycles = Object.keys(clientStats).filter(client => 
+                clientStats[client].unpaidCycles > 0
+            );
+            
+            if (unpaidCycles.length > 0) {
+                hasUnpaidCycles = true;
+                message += '⚠️ PAIEMENTS EN RETARD (cycles précédents) :\n\n';
+                unpaidCycles.forEach(client => {
+                    const stats = clientStats[client];
+                    message += `• ${client} - ${stats.unpaidCycles} cycle(s) non payé(s)\n`;
+                });
+            }
+            
+            if (!hasPaymentsDue && !hasUnpaidCycles) {
+                message = '✅ Aucun paiement en attente !\nTous vos clients sont à jour.';
+            }
+            
+            alert(message);
             toggleDropdown('filterMenu');
+        }
+
+        // Réinitialiser toutes les données
+        function resetAllData() {
+            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données sauvegardées ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nC\'est irréversible !')) {
+                if (confirm('Êtes-vous vraiment sûr ? Cette action est définitive.')) {
+                    localStorage.removeItem('coachingData');
+                    sessions = [];
+                    recurringSessions = [];
+                    payments = []; // NOUVEAU
+                    notificationsEnabled = false;
+                    
+                    generateStats();
+                    generateCalendar();
+                    
+                    alert('🧹 Toutes les données ont été effacées ! La page va se recharger.');
+                    setTimeout(() => window.location.reload(), 2000);
+                }
+            }
+            toggleDropdown('actionsMenu');
         }
 
         // Générer les séances récurrentes
@@ -1177,6 +1315,7 @@
             const data = {
                 sessions: sessions,
                 recurringSessions: recurringSessions,
+                payments: payments, // NOUVEAU
                 exportDate: new Date().toISOString()
             };
             
@@ -1192,6 +1331,38 @@
             
             alert('📤 Données exportées avec succès !');
             toggleDropdown('actionsMenu');
+        }
+
+        // Marquer un paiement comme reçu (NOUVEAU)
+        function markPaymentReceived(client) {
+            const stats = getClientStats()[client];
+            if (!stats || stats.currentCycle !== 10) {
+                alert('❌ Ce client n\'a pas de paiement en attente.');
+                return;
+            }
+            
+            const amount = prompt(`💰 Montant du paiement reçu de ${client} :\n(Optionnel - vous pouvez laisser vide)`, '');
+            
+            if (confirm(`Confirmer la réception du paiement de ${client} ?\nCela va remettre son cycle à 0/10.`)) {
+                // Enregistrer le paiement
+                const payment = {
+                    id: Date.now(),
+                    client: client,
+                    date: new Date().toISOString().split('T')[0],
+                    cycle: stats.completedCycles,
+                    amount: amount || 'Non spécifié',
+                    sessionCount: 10
+                };
+                
+                payments.push(payment);
+                saveData();
+                
+                // Refresh l'affichage
+                generateStats();
+                showClientDetails(client); // Refresh la modale
+                
+                alert(`✅ Paiement enregistré pour ${client} !\n💰 Montant: ${payment.amount}\n🔄 Cycle remis à 0/10`);
+            }
         }
 
         function closeModal() {
@@ -1215,8 +1386,11 @@
                     if (data.recurringSessions && Array.isArray(data.recurringSessions)) {
                         recurringSessions = data.recurringSessions;
                     }
+                    if (data.payments && Array.isArray(data.payments)) {
+                        payments = data.payments; // NOUVEAU
+                    }
                     
-                    saveData(); // Sauvegarder les données importées
+                    saveData(); // Sauvegarder après importation
                     generateStats();
                     generateCalendar();
                     alert('📥 Données importées avec succès !');
@@ -1240,7 +1414,7 @@
             };
             
             sessions.push(newSession);
-            saveData(); // Sauvegarde automatique
+            saveData(); // Sauvegarder automatiquement
             generateStats();
             generateCalendar();
             closeModal();
@@ -1267,7 +1441,7 @@
             
             recurringSessions.push(newRecurring);
             generateRecurringSessions();
-            saveData(); // Sauvegarde automatique
+            saveData(); // Sauvegarder automatiquement
             generateStats();
             generateCalendar();
             closeModal();
@@ -1315,14 +1489,7 @@
 
         // Initialisation
         try {
-            const hasExistingData = loadData();
-            
-            if (!hasExistingData) {
-                // Première utilisation - charger les données d'exemple
-                initSampleData();
-                saveData(); // Sauvegarder les exemples
-            }
-            
+            initSampleData();
             generateRecurringSessions();
             generateStats();
             generateCalendar();
