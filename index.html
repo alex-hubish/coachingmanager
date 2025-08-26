@@ -454,12 +454,8 @@
                 </button>
                 <div id="actionsMenu" class="dropdown-menu">
                     <button class="dropdown-item" onclick="requestNotificationPermission()">🔔 Activer notifications</button>
-                    <div style="padding: 0.5rem; background: #fef3c7; margin: 0.25rem; border-radius: 4px; font-size: 0.8rem; text-align: center; color: #92400e;">
-                        💾 Sauvegarde: Utilisez Export/Import
-                    </div>
-                    <button class="dropdown-item" onclick="exportData()">📤 Sauvegarder (Export)</button>
-                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Restaurer (Import)</button>
-                    <button class="dropdown-item" onclick="resetAllData()">🧹 Reset complet</button>
+                    <button class="dropdown-item" onclick="exportData()">📤 Exporter données</button>
+                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Importer données</button>
                     <button class="dropdown-item" onclick="window.location.reload()">🔄 Actualiser</button>
                 </div>
             </div>
@@ -506,17 +502,6 @@
     </div>
 
     <div class="container">
-        <!-- Message informatif sur la sauvegarde -->
-        <div style="background: rgba(255, 255, 255, 0.95); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                <span style="font-size: 1.2rem;">💡</span>
-                <strong style="color: #92400e;">Info importante</strong>
-            </div>
-            <p style="font-size: 0.9rem; color: #92400e; margin: 0;">
-                Vos modifications persistent pendant votre session. Pour sauvegarder définitivement, utilisez <strong>"📤 Sauvegarder (Export)"</strong> puis <strong>"📥 Restaurer (Import)"</strong> pour récupérer vos données.
-            </p>
-        </div>
-
         <div id="statsContainer" class="stats-grid">
             <!-- Les statistiques seront générées ici -->
         </div>
@@ -633,19 +618,50 @@
         // Variables globales
         let sessions = [];
         let recurringSessions = [];
-        let payments = []; // NOUVEAU: Historique des paiements
+        let payments = []; 
         let currentDate = new Date();
         let filteredClient = '';
         let dateFilter = { start: null, end: null };
         let notificationsEnabled = false;
 
-        // Variables pour éviter le rechargement automatique des exemples
-        let dataInitialized = false;
+        // Sauvegarder automatiquement à chaque modification
+        function autoSave() {
+            try {
+                const data = {
+                    sessions: sessions,
+                    recurringSessions: recurringSessions,
+                    payments: payments,
+                    notificationsEnabled: notificationsEnabled,
+                    lastSaved: new Date().toISOString()
+                };
+                localStorage.setItem('coachingManagerData', JSON.stringify(data));
+                console.log('💾 Sauvegarde automatique réussie');
+            } catch (error) {
+                console.error('❌ Erreur sauvegarde:', error);
+            }
+        }
 
-        // Initialisation de données d'exemple (seulement au premier chargement)
+        // Charger les données sauvegardées au démarrage
+        function loadSavedData() {
+            try {
+                const saved = localStorage.getItem('coachingManagerData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    sessions = data.sessions || [];
+                    recurringSessions = data.recurringSessions || [];
+                    payments = data.payments || [];
+                    notificationsEnabled = data.notificationsEnabled || false;
+                    console.log('📂 Données chargées depuis la sauvegarde');
+                    return true;
+                }
+            } catch (error) {
+                console.error('❌ Erreur chargement:', error);
+            }
+            return false;
+        }
+
+        // Initialisation de données d'exemple (seulement si pas de sauvegarde)
         function initSampleData() {
-            if (dataInitialized) return; // Empêcher le rechargement des exemples
-            
             const sampleSessions = [
                 { id: 1, client: 'Théo', date: '2025-01-15', time: '10:00', type: 'coaching', hasReminder: true },
                 { id: 2, client: 'Théo', date: '2025-01-10', time: '14:00', type: 'coaching', hasReminder: true },
@@ -663,8 +679,7 @@
             ];
             recurringSessions = sampleRecurring;
             
-            dataInitialized = true; // Marquer comme initialisé
-            console.log('📝 Données d\'exemple chargées (première fois seulement)');
+            console.log('📝 Données d\'exemple chargées');
         }
 
         // Demander les permissions de notification
@@ -673,6 +688,7 @@
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     notificationsEnabled = true;
+                    autoSave(); // Sauvegarder
                     alert('🎉 Notifications activées ! Vous recevrez des rappels 30 min avant vos séances.');
                     checkForNotifications();
                 } else {
@@ -980,6 +996,7 @@
             
             if (confirm(`Supprimer définitivement la séance de ${session.client} du ${formatDate(session.date)} à ${session.time} ?`)) {
                 sessions = sessions.filter(s => s.id !== sessionId);
+                autoSave(); // Sauvegarder immédiatement
                 generateStats();
                 generateCalendar();
                 
@@ -989,7 +1006,7 @@
                     showClientDetails(session.client);
                 }
                 
-                alert('🗑️ Séance supprimée avec succès !');
+                alert('🗑️ Séance supprimée définitivement !');
             }
         }
 
@@ -1030,11 +1047,12 @@
                         session.hasReminder = enableReminder;
                         session.notified = false; // Reset le statut de notification
                         
+                        autoSave(); // Sauvegarder immédiatement
                         generateStats();
                         generateCalendar();
                         showClientDetails(session.client); // Refresh la modale
                         
-                        alert(`✅ Séance modifiée avec succès !${enableReminder ? '\n🔔 Notifications activées pour cette séance.' : ''}`);
+                        alert(`✅ Séance modifiée et sauvegardée !${enableReminder ? '\n🔔 Notifications activées pour cette séance.' : ''}`);
                     }
                 }
             }
@@ -1226,18 +1244,19 @@
 
         // Réinitialiser toutes les données
         function resetAllData() {
-            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nCette action efface seulement pour cette session.')) {
-                if (confirm('Êtes-vous vraiment sûr ? Cette action va tout effacer.')) {
+            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nC\'est irréversible !')) {
+                if (confirm('Êtes-vous vraiment sûr ? Cette action est définitive.')) {
                     sessions = [];
                     recurringSessions = [];
                     payments = [];
                     notificationsEnabled = false;
-                    dataInitialized = false;
                     
+                    // Recharger les données d'exemple
+                    initSampleData();
                     generateStats();
                     generateCalendar();
                     
-                    alert('🧹 Toutes les données ont été effacées !');
+                    alert('🧹 Données effacées ! Données d\'exemple rechargées.');
                 }
             }
             toggleDropdown('actionsMenu');
@@ -1285,6 +1304,8 @@
                     currentDate.setDate(currentDate.getDate() + 7);
                 }
             });
+            
+            autoSave(); // Sauvegarder après génération des récurrences
         }
 
         // Exporter les données
@@ -1292,7 +1313,8 @@
             const data = {
                 sessions: sessions,
                 recurringSessions: recurringSessions,
-                payments: payments, // NOUVEAU
+                payments: payments,
+                notificationsEnabled: notificationsEnabled,
                 exportDate: new Date().toISOString()
             };
             
@@ -1306,7 +1328,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('📤 Données exportées avec succès !');
+            alert('📤 Données exportées ! (Sauvegarde de secours recommandée)');
             toggleDropdown('actionsMenu');
         }
 
@@ -1332,12 +1354,13 @@
                 };
                 
                 payments.push(payment);
+                autoSave(); // Sauvegarder immédiatement
                 
                 // Refresh l'affichage
                 generateStats();
                 showClientDetails(client); // Refresh la modale
                 
-                alert(`✅ Paiement enregistré pour ${client} !\n💰 Montant: ${payment.amount}\n🔄 Cycle remis à 0/10`);
+                alert(`✅ Paiement enregistré et sauvegardé pour ${client} !\n💰 Montant: ${payment.amount}\n🔄 Cycle remis à 0/10`);
             }
         }
 
@@ -1365,10 +1388,14 @@
                     if (data.payments && Array.isArray(data.payments)) {
                         payments = data.payments;
                     }
+                    if (typeof data.notificationsEnabled === 'boolean') {
+                        notificationsEnabled = data.notificationsEnabled;
+                    }
                     
+                    autoSave(); // Sauvegarder après import
                     generateStats();
                     generateCalendar();
-                    alert('📥 Données importées avec succès !');
+                    alert('📥 Données importées et sauvegardées automatiquement !');
                 } catch (error) {
                     alert('❌ Erreur lors de l\'importation : fichier invalide');
                 }
@@ -1389,14 +1416,15 @@
             };
             
             sessions.push(newSession);
+            autoSave(); // Sauvegarder immédiatement
             generateStats();
             generateCalendar();
             closeModal();
             
             document.getElementById('sessionForm').reset();
-            document.getElementById('enableReminder').checked = true; // Re-cocher par défaut
+            document.getElementById('enableReminder').checked = true;
             
-            alert(`✅ Séance ajoutée pour ${newSession.client}${newSession.hasReminder ? ' avec rappel' : ''}`);
+            alert(`✅ Séance ajoutée et sauvegardée pour ${newSession.client}${newSession.hasReminder ? ' avec rappel' : ''}`);
         });
 
         document.getElementById('recurringForm').addEventListener('submit', (e) => {
@@ -1415,6 +1443,7 @@
             
             recurringSessions.push(newRecurring);
             generateRecurringSessions();
+            autoSave(); // Sauvegarder immédiatement
             generateStats();
             generateCalendar();
             closeModal();
@@ -1422,7 +1451,7 @@
             document.getElementById('recurringForm').reset();
             
             const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-            alert(`🔄 Séances récurrentes créées pour ${newRecurring.client} tous les ${dayNames[newRecurring.day]} à ${newRecurring.time} !`);
+            alert(`🔄 Séances récurrentes créées et sauvegardées pour ${newRecurring.client} tous les ${dayNames[newRecurring.day]} à ${newRecurring.time} !`);
         });
 
         document.getElementById('clientSearch').addEventListener('input', (e) => {
