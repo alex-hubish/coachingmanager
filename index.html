@@ -496,6 +496,8 @@
                     <button class="dropdown-item" onclick="showAllClients()">👥 Voir tous les clients</button>
                     <button class="dropdown-item" onclick="showPaymentsDue()">💰 Paiements dus</button>
                     <button class="dropdown-item" onclick="showPaymentHistory()">📜 Historique paiements</button>
+                    <button class="dropdown-item" onclick="debugStorage()">🔧 Debug sauvegarde</button>
+                    <button class="dropdown-item" onclick="clearAllData()">🗑️ Effacer tout</button>
                 </div>
             </div>
         </div>
@@ -635,29 +637,58 @@
                     lastSaved: new Date().toISOString()
                 };
                 localStorage.setItem('coachingManagerData', JSON.stringify(data));
-                console.log('💾 Sauvegarde automatique réussie');
+                console.log('💾 Sauvegarde:', sessions.length, 'séances,', payments.length, 'paiements');
+                
+                // Test immédiat de lecture
+                const test = localStorage.getItem('coachingManagerData');
+                if (test) {
+                    console.log('✅ Sauvegarde confirmée dans localStorage');
+                } else {
+                    console.error('❌ Échec sauvegarde localStorage');
+                }
             } catch (error) {
                 console.error('❌ Erreur sauvegarde:', error);
+                alert('⚠️ Impossible de sauvegarder automatiquement. Utilisez Export/Import.');
             }
         }
 
         // Charger les données sauvegardées au démarrage
         function loadSavedData() {
             try {
+                console.log('🔍 Recherche de données sauvegardées...');
                 const saved = localStorage.getItem('coachingManagerData');
+                
                 if (saved) {
+                    console.log('📂 Données trouvées, chargement...');
                     const data = JSON.parse(saved);
-                    sessions = data.sessions || [];
-                    recurringSessions = data.recurringSessions || [];
-                    payments = data.payments || [];
-                    notificationsEnabled = data.notificationsEnabled || false;
-                    console.log('📂 Données chargées depuis la sauvegarde');
+                    
+                    // Charger chaque type de données
+                    if (data.sessions && Array.isArray(data.sessions)) {
+                        sessions = data.sessions;
+                        console.log('✅ Chargé', sessions.length, 'séances');
+                    }
+                    if (data.recurringSessions && Array.isArray(data.recurringSessions)) {
+                        recurringSessions = data.recurringSessions;
+                        console.log('✅ Chargé', recurringSessions.length, 'récurrences');
+                    }
+                    if (data.payments && Array.isArray(data.payments)) {
+                        payments = data.payments;
+                        console.log('✅ Chargé', payments.length, 'paiements');
+                    }
+                    if (typeof data.notificationsEnabled === 'boolean') {
+                        notificationsEnabled = data.notificationsEnabled;
+                    }
+                    
+                    console.log('📂 Toutes les données chargées depuis la sauvegarde');
                     return true;
+                } else {
+                    console.log('📝 Aucune sauvegarde trouvée');
+                    return false;
                 }
             } catch (error) {
                 console.error('❌ Erreur chargement:', error);
+                return false;
             }
-            return false;
         }
 
         // Initialisation de données d'exemple (seulement si pas de sauvegarde)
@@ -1200,6 +1231,57 @@
             toggleDropdown('filterMenu');
         }
 
+        // Debug du système de sauvegarde
+        function debugStorage() {
+            try {
+                const saved = localStorage.getItem('coachingManagerData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const message = `🔧 DEBUG SAUVEGARDE :\n\n` +
+                        `✅ LocalStorage: FONCTIONNE\n` +
+                        `📊 Séances sauvées: ${data.sessions ? data.sessions.length : 0}\n` +
+                        `🔄 Récurrences: ${data.recurringSessions ? data.recurringSessions.length : 0}\n` +
+                        `💰 Paiements: ${data.payments ? data.payments.length : 0}\n` +
+                        `🕐 Dernière sauvegarde: ${data.lastSaved || 'N/A'}\n\n` +
+                        `📝 Séances actuelles en mémoire: ${sessions.length}\n` +
+                        `📅 Dernière séance: ${sessions.length > 0 ? sessions[sessions.length - 1].date : 'Aucune'}`;
+                    
+                    alert(message);
+                } else {
+                    alert('❌ DEBUG: Aucune donnée trouvée dans localStorage\n\nCela peut signifier :\n- Première utilisation\n- Données effacées\n- Problème de navigateur');
+                }
+            } catch (error) {
+                alert(`❌ DEBUG: Erreur localStorage\n\n${error.message}\n\nVotre navigateur ne supporte peut-être pas localStorage.`);
+            }
+            toggleDropdown('filterMenu');
+        }
+
+        // Effacer complètement toutes les données
+        function clearAllData() {
+            if (confirm('🗑️ EFFACER COMPLÈTEMENT TOUTES LES DONNÉES ?\n\nCette action :\n✅ Supprime tout de localStorage\n✅ Vide toutes les séances\n✅ Vide tous les paiements\n✅ Repart de zéro\n\nC\'est irréversible !')) {
+                try {
+                    // Effacer localStorage
+                    localStorage.removeItem('coachingManagerData');
+                    
+                    // Vider toutes les variables
+                    sessions = [];
+                    recurringSessions = [];
+                    payments = [];
+                    notificationsEnabled = false;
+                    
+                    // Regénérer l'affichage vide
+                    generateStats();
+                    generateCalendar();
+                    
+                    console.log('🗑️ Toutes les données effacées');
+                    alert('🗑️ Toutes les données ont été définitivement effacées !\nVous repartez avec un site vierge.');
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'effacement');
+                }
+            }
+            toggleDropdown('filterMenu');
+        }
+
         function showPaymentsDue() {
             const clientStats = getClientStats();
             let message = '';
@@ -1264,9 +1346,16 @@
 
         // Générer les séances récurrentes
         function generateRecurringSessions() {
+            if (recurringSessions.length === 0) {
+                console.log('🔄 Aucune récurrence configurée');
+                return;
+            }
+            
+            console.log('🔄 Génération des séances récurrentes...');
             const today = new Date();
             const futureLimit = new Date();
             futureLimit.setMonth(futureLimit.getMonth() + 3);
+            let newSessionsCount = 0;
 
             recurringSessions.forEach(recurring => {
                 if (!recurring.active) return;
@@ -1295,17 +1384,21 @@
                             date: dateStr,
                             time: recurring.time,
                             type: recurring.type,
-                            hasReminder: true, // Notifications activées par défaut pour les récurrences
+                            hasReminder: true,
                             isRecurring: true,
                             recurringId: recurring.id
                         });
+                        newSessionsCount++;
                     }
 
                     currentDate.setDate(currentDate.getDate() + 7);
                 }
             });
             
-            autoSave(); // Sauvegarder après génération des récurrences
+            if (newSessionsCount > 0) {
+                console.log('🔄', newSessionsCount, 'nouvelles séances récurrentes générées');
+                autoSave(); // Sauvegarder après génération
+            }
         }
 
         // Exporter les données
