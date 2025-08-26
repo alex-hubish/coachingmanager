@@ -454,8 +454,11 @@
                 </button>
                 <div id="actionsMenu" class="dropdown-menu">
                     <button class="dropdown-item" onclick="requestNotificationPermission()">🔔 Activer notifications</button>
-                    <button class="dropdown-item" onclick="exportData()">📤 Exporter données</button>
-                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Importer données</button>
+                    <div style="padding: 0.5rem; background: #fef3c7; margin: 0.25rem; border-radius: 4px; font-size: 0.8rem; text-align: center; color: #92400e;">
+                        💾 Sauvegarde: Utilisez Export/Import
+                    </div>
+                    <button class="dropdown-item" onclick="exportData()">📤 Sauvegarder (Export)</button>
+                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Restaurer (Import)</button>
                     <button class="dropdown-item" onclick="resetAllData()">🧹 Reset complet</button>
                     <button class="dropdown-item" onclick="window.location.reload()">🔄 Actualiser</button>
                 </div>
@@ -503,6 +506,17 @@
     </div>
 
     <div class="container">
+        <!-- Message informatif sur la sauvegarde -->
+        <div style="background: rgba(255, 255, 255, 0.95); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.2rem;">💡</span>
+                <strong style="color: #92400e;">Info importante</strong>
+            </div>
+            <p style="font-size: 0.9rem; color: #92400e; margin: 0;">
+                Vos modifications persistent pendant votre session. Pour sauvegarder définitivement, utilisez <strong>"📤 Sauvegarder (Export)"</strong> puis <strong>"📥 Restaurer (Import)"</strong> pour récupérer vos données.
+            </p>
+        </div>
+
         <div id="statsContainer" class="stats-grid">
             <!-- Les statistiques seront générées ici -->
         </div>
@@ -625,47 +639,13 @@
         let dateFilter = { start: null, end: null };
         let notificationsEnabled = false;
 
-        // Sauvegarder les données automatiquement
-        function saveData() {
-            try {
-                const data = {
-                    sessions: sessions,
-                    recurringSessions: recurringSessions,
-                    payments: payments, // NOUVEAU
-                    notificationsEnabled: notificationsEnabled,
-                    lastSaved: new Date().toISOString()
-                };
-                localStorage.setItem('coachingData', JSON.stringify(data));
-                console.log('💾 Données sauvegardées automatiquement');
-            } catch (error) {
-                console.error('❌ Erreur sauvegarde:', error);
-            }
-        }
+        // Variables pour éviter le rechargement automatique des exemples
+        let dataInitialized = false;
 
-        // Charger les données sauvegardées
-        function loadData() {
-            try {
-                const savedData = localStorage.getItem('coachingData');
-                if (savedData) {
-                    const data = JSON.parse(savedData);
-                    sessions = data.sessions || [];
-                    recurringSessions = data.recurringSessions || [];
-                    payments = data.payments || []; // NOUVEAU
-                    notificationsEnabled = data.notificationsEnabled || false;
-                    console.log('📂 Données chargées depuis la sauvegarde');
-                    return true;
-                } else {
-                    console.log('📝 Aucune sauvegarde trouvée, chargement des données d\'exemple');
-                    return false;
-                }
-            } catch (error) {
-                console.error('❌ Erreur chargement:', error);
-                return false;
-            }
-        }
-
-        // Initialisation de données d'exemple (seulement si pas de sauvegarde)
+        // Initialisation de données d'exemple (seulement au premier chargement)
         function initSampleData() {
+            if (dataInitialized) return; // Empêcher le rechargement des exemples
+            
             const sampleSessions = [
                 { id: 1, client: 'Théo', date: '2025-01-15', time: '10:00', type: 'coaching', hasReminder: true },
                 { id: 2, client: 'Théo', date: '2025-01-10', time: '14:00', type: 'coaching', hasReminder: true },
@@ -683,7 +663,8 @@
             ];
             recurringSessions = sampleRecurring;
             
-            console.log('📝 Données d\'exemple chargées');
+            dataInitialized = true; // Marquer comme initialisé
+            console.log('📝 Données d\'exemple chargées (première fois seulement)');
         }
 
         // Demander les permissions de notification
@@ -692,7 +673,6 @@
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     notificationsEnabled = true;
-                    saveData(); // Sauvegarder le statut des notifications
                     alert('🎉 Notifications activées ! Vous recevrez des rappels 30 min avant vos séances.');
                     checkForNotifications();
                 } else {
@@ -993,14 +973,13 @@
             modal.style.display = 'block';
         }
 
-        // Supprimer une séance par ID (NOUVEAU)
+        // Supprimer une séance par ID
         function deleteSessionById(sessionId) {
             const session = sessions.find(s => s.id === sessionId);
             if (!session) return;
             
             if (confirm(`Supprimer définitivement la séance de ${session.client} du ${formatDate(session.date)} à ${session.time} ?`)) {
                 sessions = sessions.filter(s => s.id !== sessionId);
-                saveData(); // Sauvegarder automatiquement
                 generateStats();
                 generateCalendar();
                 
@@ -1051,7 +1030,6 @@
                         session.hasReminder = enableReminder;
                         session.notified = false; // Reset le statut de notification
                         
-                        saveData(); // Sauvegarder automatiquement
                         generateStats();
                         generateCalendar();
                         showClientDetails(session.client); // Refresh la modale
@@ -1248,19 +1226,18 @@
 
         // Réinitialiser toutes les données
         function resetAllData() {
-            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données sauvegardées ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nC\'est irréversible !')) {
-                if (confirm('Êtes-vous vraiment sûr ? Cette action est définitive.')) {
-                    localStorage.removeItem('coachingData');
+            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nCette action efface seulement pour cette session.')) {
+                if (confirm('Êtes-vous vraiment sûr ? Cette action va tout effacer.')) {
                     sessions = [];
                     recurringSessions = [];
-                    payments = []; // NOUVEAU
+                    payments = [];
                     notificationsEnabled = false;
+                    dataInitialized = false;
                     
                     generateStats();
                     generateCalendar();
                     
-                    alert('🧹 Toutes les données ont été effacées ! La page va se recharger.');
-                    setTimeout(() => window.location.reload(), 2000);
+                    alert('🧹 Toutes les données ont été effacées !');
                 }
             }
             toggleDropdown('actionsMenu');
@@ -1355,7 +1332,6 @@
                 };
                 
                 payments.push(payment);
-                saveData();
                 
                 // Refresh l'affichage
                 generateStats();
@@ -1387,10 +1363,9 @@
                         recurringSessions = data.recurringSessions;
                     }
                     if (data.payments && Array.isArray(data.payments)) {
-                        payments = data.payments; // NOUVEAU
+                        payments = data.payments;
                     }
                     
-                    saveData(); // Sauvegarder après importation
                     generateStats();
                     generateCalendar();
                     alert('📥 Données importées avec succès !');
@@ -1414,7 +1389,6 @@
             };
             
             sessions.push(newSession);
-            saveData(); // Sauvegarder automatiquement
             generateStats();
             generateCalendar();
             closeModal();
@@ -1441,7 +1415,6 @@
             
             recurringSessions.push(newRecurring);
             generateRecurringSessions();
-            saveData(); // Sauvegarder automatiquement
             generateStats();
             generateCalendar();
             closeModal();
