@@ -13,7 +13,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
@@ -22,7 +22,7 @@
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 1rem;
+            padding: 0.75rem;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -34,14 +34,75 @@
             font-size: 1.5rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
         
-        .search-section {
+        .header-actions {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+            justify-content: center;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-toggle {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 44px;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            z-index: 1001;
+            display: none;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+        
+        .dropdown-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
         }
         
         .search-input {
@@ -49,8 +110,14 @@
             padding: 0.75rem;
             border: 2px solid #e5e7eb;
             border-radius: 12px;
-            font-size: 16px;
-            min-width: 200px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         
         .btn {
@@ -61,6 +128,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            text-align: center;
             min-height: 44px;
         }
         
@@ -69,95 +137,96 @@
         .btn-warning { background: #d97706; color: white; }
         .btn-danger { background: #dc2626; color: white; }
         
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
         .container {
             max-width: 1200px;
             margin: 1rem auto;
-            padding: 0 1rem;
+            padding: 0 0.75rem;
         }
         
-        .summary-table {
-            background: white;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-        
-        .summary-table h2 {
-            background: #2563eb;
-            color: white;
-            padding: 1rem;
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        th {
-            background: #f8fafc;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .client-row {
+            border: 1px solid rgba(255, 255, 255, 0.18);
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: transform 0.3s ease;
         }
         
-        .client-row:hover {
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-card h3 {
+            color: #2563eb;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .client-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
             background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
         }
         
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .client-name {
             font-weight: 600;
+            color: #1e293b;
         }
         
-        .status-ok {
-            background: #dcfce7;
+        .session-count {
+            font-weight: 700;
             color: #059669;
         }
         
-        .status-due {
+        .payment-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .payment-due {
             background: #fee2e2;
             color: #dc2626;
             animation: pulse 2s infinite;
         }
         
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
+        .payment-ok {
+            background: #dcfce7;
+            color: #059669;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: #2563eb;
-            transition: width 0.3s ease;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
         
-        .calendar-section {
-            background: white;
+        .calendar-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .calendar-header {
@@ -165,11 +234,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         
         .calendar-nav {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
         }
         
         .calendar-grid {
@@ -184,10 +256,12 @@
         .calendar-day {
             background: white;
             padding: 0.5rem;
-            min-height: 60px;
-            cursor: pointer;
+            min-height: 70px;
             position: relative;
+            cursor: pointer;
             transition: background 0.2s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .calendar-day:hover {
@@ -206,14 +280,7 @@
         
         .day-number {
             font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .session-indicator {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
         }
         
         .session-dot {
@@ -221,6 +288,8 @@
             height: 6px;
             border-radius: 50%;
             background: #2563eb;
+            display: inline-block;
+            margin: 1px;
         }
         
         .modal {
@@ -236,11 +305,13 @@
         
         .modal-content {
             background: white;
-            margin: 10% auto;
+            margin: 5% auto;
             padding: 2rem;
             border-radius: 16px;
             max-width: 500px;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-close {
@@ -262,6 +333,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
+            color: #374151;
         }
         
         .form-group input, .form-group select {
@@ -272,57 +344,100 @@
             font-size: 16px;
         }
         
-        /* Mobile optimizations */
+        .sessions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .session-item:last-child {
+            border-bottom: none;
+        }
+        
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+        
+        .edit-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
         @media (max-width: 768px) {
-            .header {
-                padding: 0.75rem;
+            .header-actions {
+                gap: 0.5rem;
+                justify-content: stretch;
             }
             
-            .header h1 {
-                font-size: 1.3rem;
+            .dropdown {
+                flex: 1;
             }
             
-            .search-section {
-                flex-direction: column;
-            }
-            
-            .container {
-                padding: 0 0.5rem;
-            }
-            
-            .summary-table h2 {
-                font-size: 1rem;
-                padding: 0.75rem;
-            }
-            
-            th, td {
-                padding: 0.5rem;
+            .dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
                 font-size: 0.85rem;
+                padding: 0.6rem;
+            }
+            
+            .dropdown-menu {
+                min-width: 100%;
+                left: 0;
+                right: 0;
+            }
+            
+            .dropdown-item {
+                padding: 1rem;
+                font-size: 0.9rem;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
             }
             
             .calendar-header {
                 flex-direction: column;
                 gap: 0.5rem;
+                text-align: center;
             }
             
             .calendar-day {
                 min-height: 50px;
                 padding: 0.25rem;
-            }
-            
-            .day-number {
                 font-size: 0.8rem;
             }
             
-            .session-dot {
-                width: 4px;
-                height: 4px;
-            }
-            
-            .modal-content {
-                margin: 5% auto;
-                max-width: 95%;
-                padding: 1rem;
+            .session-item {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 0.5rem;
+                padding: 0.75rem;
             }
         }
     </style>
@@ -330,45 +445,73 @@
 <body>
     <div class="header">
         <h1>🎯 Coaching Manager</h1>
-        <div class="search-section">
-            <input type="text" id="clientSearch" class="search-input" placeholder="🔍 Rechercher un client...">
-            <button onclick="openAddModal()" class="btn btn-success">+ Séance</button>
-            <button onclick="openRecurringModal()" class="btn btn-warning">🔄 Récurrente</button>
-            <button onclick="exportData()" class="btn btn-primary">📤 Export</button>
+        
+        <div class="header-actions">
+            <!-- Menu Actions -->
+            <div class="dropdown">
+                <button class="dropdown-toggle" onclick="toggleDropdown('actionsMenu')">
+                    ⚙️ Actions <span>▼</span>
+                </button>
+                <div id="actionsMenu" class="dropdown-menu">
+                    <button class="dropdown-item" onclick="requestNotificationPermission()">🔔 Activer notifications</button>
+                    <button class="dropdown-item" onclick="exportData()">📤 Exporter données</button>
+                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Importer données</button>
+                    <button class="dropdown-item" onclick="window.location.reload()">🔄 Actualiser</button>
+                </div>
+            </div>
+
+            <!-- Menu Séances -->
+            <div class="dropdown">
+                <button class="dropdown-toggle btn-success" onclick="toggleDropdown('sessionsMenu')" style="background: #059669;">
+                    ➕ Séances <span>▼</span>
+                </button>
+                <div id="sessionsMenu" class="dropdown-menu">
+                    <button class="dropdown-item" onclick="openSessionModal()">📅 Nouvelle séance</button>
+                    <button class="dropdown-item" onclick="openRecurringModal()">🔄 Séance récurrente</button>
+                    <button class="dropdown-item" onclick="showTodaySessions()">📋 Séances du jour</button>
+                </div>
+            </div>
+
+            <input type="file" id="fileInput" style="display: none;" accept=".json">
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" id="clientSearch" class="search-input" placeholder="🔍 Rechercher un client">
+            
+            <!-- Menu Filtre -->
+            <div class="dropdown" style="width: 100%;">
+                <button class="dropdown-toggle" onclick="toggleDropdown('filterMenu')" style="width: 100%; justify-content: space-between;">
+                    📊 Filtres & Options <span>▼</span>
+                </button>
+                <div id="filterMenu" class="dropdown-menu" style="width: 100%;">
+                    <div style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">
+                        <label style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem; display: block;">Période :</label>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <input type="date" id="startDate" style="flex: 1; padding: 0.5rem; font-size: 0.85rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <input type="date" id="endDate" style="flex: 1; padding: 0.5rem; font-size: 0.85rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                        </div>
+                        <button onclick="applyDateFilter()" class="btn btn-primary" style="width: 100%; padding: 0.5rem;">Appliquer le filtre</button>
+                    </div>
+                    <button class="dropdown-item" onclick="clearFilters()">🧹 Effacer les filtres</button>
+                    <button class="dropdown-item" onclick="showAllClients()">👥 Voir tous les clients</button>
+                    <button class="dropdown-item" onclick="showPaymentsDue()">💰 Paiements dus</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <!-- Tableau récapitulatif -->
-        <div class="summary-table">
-            <h2>📊 Récapitulatif des coachings</h2>
-            <div class="table-container">
-                <table id="summaryTable">
-                    <thead>
-                        <tr>
-                            <th>👤 Client</th>
-                            <th>📈 Total</th>
-                            <th>🎯 Cycle</th>
-                            <th>💰 Status</th>
-                            <th>📅 Dernière</th>
-                            <th>⚡ Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="summaryBody">
-                        <!-- Les données seront générées ici -->
-                    </tbody>
-                </table>
-            </div>
+        <div id="statsContainer" class="stats-grid">
+            <!-- Les statistiques seront générées ici -->
         </div>
 
-        <!-- Calendrier -->
-        <div class="calendar-section">
+        <div class="calendar-container">
             <div class="calendar-header">
                 <h2 id="currentMonth">Loading...</h2>
                 <div class="calendar-nav">
-                    <button onclick="changeMonth(-1)" class="btn btn-primary">‹</button>
-                    <button onclick="goToToday()" class="btn btn-primary">Aujourd'hui</button>
-                    <button onclick="changeMonth(1)" class="btn btn-primary">›</button>
+                    <button id="prevMonth" class="btn btn-primary">‹</button>
+                    <button id="todayBtn" class="btn btn-primary">Aujourd'hui</button>
+                    <button id="nextMonth" class="btn btn-primary">›</button>
                 </div>
             </div>
             <div class="calendar-grid" id="calendarGrid">
@@ -377,50 +520,50 @@
         </div>
     </div>
 
-    <!-- Modal nouvelle séance -->
-    <div id="addModal" class="modal">
+    <!-- Modal pour ajouter une séance -->
+    <div id="sessionModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <h3>Ajouter une séance</h3>
             <form id="sessionForm">
                 <div class="form-group">
-                    <label>Nom du client :</label>
+                    <label for="clientName">Nom du client :</label>
                     <input type="text" id="clientName" required>
                 </div>
                 <div class="form-group">
-                    <label>Date :</label>
+                    <label for="sessionDate">Date :</label>
                     <input type="date" id="sessionDate" required>
                 </div>
                 <div class="form-group">
-                    <label>Heure :</label>
+                    <label for="sessionTime">Heure :</label>
                     <input type="time" id="sessionTime" required>
                 </div>
                 <div class="form-group">
-                    <label>Type :</label>
+                    <label for="sessionType">Type de séance :</label>
                     <select id="sessionType">
                         <option value="coaching">Coaching individuel</option>
                         <option value="group">Coaching de groupe</option>
                         <option value="consultation">Consultation</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success" style="width: 100%;">Ajouter</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Ajouter la séance</button>
             </form>
         </div>
     </div>
 
-    <!-- Modal séances récurrentes -->
+    <!-- Modal pour séances récurrentes -->
     <div id="recurringModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h3>Séance récurrente</h3>
+            <h3>🔄 Créer une séance récurrente</h3>
             <form id="recurringForm">
                 <div class="form-group">
-                    <label>Client :</label>
+                    <label for="recurringClient">Nom du client :</label>
                     <input type="text" id="recurringClient" required>
                 </div>
                 <div class="form-group">
-                    <label>Jour de la semaine :</label>
-                    <select id="recurringDay">
+                    <label for="recurringDay">Jour de la semaine :</label>
+                    <select id="recurringDay" required>
                         <option value="1">Lundi</option>
                         <option value="2">Mardi</option>
                         <option value="3">Mercredi</option>
@@ -431,15 +574,38 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Heure :</label>
+                    <label for="recurringTime">Heure :</label>
                     <input type="time" id="recurringTime" required>
                 </div>
                 <div class="form-group">
-                    <label>Commencer le :</label>
+                    <label for="recurringType">Type de séance :</label>
+                    <select id="recurringType">
+                        <option value="coaching">Coaching individuel</option>
+                        <option value="group">Coaching de groupe</option>
+                        <option value="consultation">Consultation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startRecurring">Commencer à partir du :</label>
                     <input type="date" id="startRecurring" required>
                 </div>
-                <button type="submit" class="btn btn-warning" style="width: 100%;">Créer récurrence</button>
+                <div class="form-group">
+                    <label for="endRecurring">Jusqu'au (optionnel) :</label>
+                    <input type="date" id="endRecurring">
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%;">Créer les séances récurrentes</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal pour voir les détails d'un client -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="clientModalTitle">Détails client</h3>
+            <div id="clientDetails">
+                <!-- Les détails seront générés ici -->
+            </div>
         </div>
     </div>
 
@@ -447,104 +613,119 @@
         // Variables globales
         let sessions = [];
         let recurringSessions = [];
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
+        let currentDate = new Date();
         let filteredClient = '';
+        let dateFilter = { start: null, end: null };
+        let notificationsEnabled = false;
 
-        // Données d'exemple
-        function initData() {
-            sessions = [
+        // Initialisation de données d'exemple
+        function initSampleData() {
+            const sampleSessions = [
                 { id: 1, client: 'Théo', date: '2025-01-15', time: '10:00', type: 'coaching' },
-                { id: 2, client: 'Théo', date: '2025-01-22', time: '10:00', type: 'coaching' },
-                { id: 3, client: 'Théo', date: '2025-01-29', time: '10:00', type: 'coaching' },
-                { id: 4, client: 'Théo', date: '2025-02-05', time: '10:00', type: 'coaching' },
-                { id: 5, client: 'Théo', date: '2025-02-12', time: '10:00', type: 'coaching' },
-                { id: 6, client: 'Théo', date: '2025-02-19', time: '10:00', type: 'coaching' },
-                { id: 7, client: 'Théo', date: '2025-02-26', time: '10:00', type: 'coaching' },
-                { id: 8, client: 'Théo', date: '2025-03-05', time: '10:00', type: 'coaching' },
-                { id: 9, client: 'Marie', date: '2025-01-16', time: '14:00', type: 'consultation' },
-                { id: 10, client: 'Marie', date: '2025-01-23', time: '14:00', type: 'consultation' },
-                { id: 11, client: 'Jean', date: '2025-01-17', time: '16:00', type: 'group' },
-                { id: 12, client: 'Sophie', date: '2025-01-18', time: '11:00', type: 'coaching' }
+                { id: 2, client: 'Théo', date: '2025-01-10', time: '14:00', type: 'coaching' },
+                { id: 3, client: 'Marie', date: '2025-01-12', time: '09:00', type: 'consultation' },
+                { id: 4, client: 'Jean', date: '2025-01-14', time: '16:00', type: 'group' },
+                { id: 5, client: 'Théo', date: '2024-11-20', time: '10:00', type: 'coaching' },
+                { id: 6, client: 'Sophie', date: '2025-01-18', time: '11:00', type: 'coaching' },
+                { id: 7, client: 'Théo', date: '2025-01-22', time: '10:00', type: 'coaching' },
+                { id: 8, client: 'Théo', date: '2025-01-29', time: '10:00', type: 'coaching' }
             ];
+            sessions = sampleSessions;
+
+            const sampleRecurring = [
+                { id: 1, client: 'Théo', day: 1, time: '10:00', type: 'coaching', startDate: '2025-01-01', endDate: null, active: true }
+            ];
+            recurringSessions = sampleRecurring;
+        }
+
+        // Demander les permissions de notification
+        async function requestNotificationPermission() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notificationsEnabled = true;
+                    alert('🎉 Notifications activées !');
+                } else {
+                    alert('Les notifications ont été refusées.');
+                }
+            }
+            toggleDropdown('actionsMenu');
         }
 
         // Calculer les statistiques par client
         function getClientStats() {
-            const stats = {};
-            
+            const clientStats = {};
+
             sessions.forEach(session => {
-                if (!stats[session.client]) {
-                    stats[session.client] = {
+                if (!clientStats[session.client]) {
+                    clientStats[session.client] = {
                         total: 0,
                         currentCycle: 0,
-                        lastSession: null,
+                        filtered: 0,
                         sessions: []
                     };
                 }
-                stats[session.client].total++;
-                stats[session.client].sessions.push(session);
-                
-                // Trouver la dernière séance
-                if (!stats[session.client].lastSession || session.date > stats[session.client].lastSession) {
-                    stats[session.client].lastSession = session.date;
+                clientStats[session.client].total++;
+                clientStats[session.client].sessions.push(session);
+
+                // Sessions dans le cycle actuel (modulo 10)
+                clientStats[session.client].currentCycle = clientStats[session.client].total % 10;
+                if (clientStats[session.client].currentCycle === 0) {
+                    clientStats[session.client].currentCycle = 10;
+                }
+
+                // Sessions filtrées par date
+                if (dateFilter.start && dateFilter.end) {
+                    const sessionDate = new Date(session.date);
+                    if (sessionDate >= dateFilter.start && sessionDate <= dateFilter.end) {
+                        clientStats[session.client].filtered++;
+                    }
                 }
             });
 
-            // Calculer le cycle actuel (position avant prochain paiement)
-            Object.keys(stats).forEach(client => {
-                const total = stats[client].total;
-                stats[client].currentCycle = total % 10 === 0 ? 10 : total % 10;
-                stats[client].sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // Trier les séances par date décroissante
+            Object.keys(clientStats).forEach(client => {
+                clientStats[client].sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
             });
 
-            return stats;
+            return clientStats;
         }
 
-        // Générer le tableau récapitulatif
-        function generateSummaryTable() {
-            const tbody = document.getElementById('summaryBody');
+        // Générer les statistiques
+        function generateStats() {
+            const container = document.getElementById('statsContainer');
             const clientStats = getClientStats();
-            
+
             let html = '';
-            
             Object.keys(clientStats).forEach(client => {
                 if (!filteredClient || client.toLowerCase().includes(filteredClient.toLowerCase())) {
                     const stats = clientStats[client];
                     const paymentDue = stats.currentCycle === 10;
-                    const progress = (stats.currentCycle / 10) * 100;
-                    const lastSessionFormatted = stats.lastSession ? formatDate(stats.lastSession) : 'Aucune';
+                    const filteredText = dateFilter.start && dateFilter.end ? 
+                        `<p><strong>Période sélectionnée:</strong> ${stats.filtered} séances</p>` : '';
                     
                     html += `
-                        <tr class="client-row" onclick="showClientDetails('${client}')">
-                            <td><strong>${client}</strong></td>
-                            <td>${stats.total}</td>
-                            <td>
-                                ${stats.currentCycle}/10
-                                <div class="progress-bar" style="margin-top: 0.25rem;">
-                                    <div class="progress-fill" style="width: ${progress}%"></div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="status-badge ${paymentDue ? 'status-due' : 'status-ok'}">
-                                    ${paymentDue ? '💰 Paiement dû' : '✅ OK'}
+                        <div class="stat-card" onclick="showClientDetails('${client}')">
+                            <h3>👤 ${client}</h3>
+                            <div class="client-info">
+                                <span class="client-name">Total séances</span>
+                                <span class="session-count">${stats.total}</span>
+                            </div>
+                            <div class="client-info">
+                                <span class="client-name">Cycle actuel</span>
+                                <span class="session-count">${stats.currentCycle}/10
+                                    <span class="payment-status ${paymentDue ? 'payment-due' : 'payment-ok'}">
+                                        ${paymentDue ? '💰 Paiement dû' : '✅ OK'}
+                                    </span>
                                 </span>
-                            </td>
-                            <td>${lastSessionFormatted}</td>
-                            <td>
-                                <button onclick="event.stopPropagation(); markPayment('${client}')" 
-                                        class="btn btn-success" 
-                                        style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"
-                                        ${!paymentDue ? 'disabled' : ''}>
-                                    💰 Payé
-                                </button>
-                            </td>
-                        </tr>
+                            </div>
+                            ${filteredText}
+                        </div>
                     `;
                 }
             });
 
-            tbody.innerHTML = html;
+            container.innerHTML = html;
         }
 
         // Générer le calendrier
@@ -552,14 +733,15 @@
             const grid = document.getElementById('calendarGrid');
             const monthHeader = document.getElementById('currentMonth');
             
-            const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-                           'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
             
-            monthHeader.textContent = `${months[currentMonth]} ${currentYear}`;
+            const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                             'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+            monthHeader.textContent = months[month] + ' ' + year;
 
-            // Premier jour du mois
-            const firstDay = new Date(currentYear, currentMonth, 1);
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
             const daysInMonth = lastDay.getDate();
             const startingDayOfWeek = firstDay.getDay();
 
@@ -568,11 +750,11 @@
             // En-têtes des jours
             const dayHeaders = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
             dayHeaders.forEach(day => {
-                html += `<div class="calendar-day" style="background: #2563eb; color: white; text-align: center; font-weight: bold; cursor: default;">${day}</div>`;
+                html += `<div class="calendar-day" style="background: #2563eb; color: white; text-align: center; font-weight: bold;">${day}</div>`;
             });
 
             // Jours du mois précédent
-            const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
+            const prevMonthDays = new Date(year, month, 0).getDate();
             for (let i = startingDayOfWeek - 1; i >= 0; i--) {
                 html += `<div class="calendar-day other-month">
                     <div class="day-number">${prevMonthDays - i}</div>
@@ -581,32 +763,27 @@
 
             // Jours du mois actuel
             for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(currentYear, currentMonth, day);
+                const date = new Date(year, month, day);
                 const dateStr = date.toISOString().split('T')[0];
-                const today = new Date();
-                const isToday = date.getDate() === today.getDate() && 
-                               date.getMonth() === today.getMonth() && 
-                               date.getFullYear() === today.getFullYear();
+                const isToday = date.toDateString() === new Date().toDateString();
                 
-                // Séances pour ce jour
+                // Compter les séances pour ce jour
                 const daySessions = sessions.filter(session => {
-                    const matchClient = !filteredClient || session.client.toLowerCase().includes(filteredClient.toLowerCase());
-                    return session.date === dateStr && matchClient;
+                    const sessionMatch = !filteredClient || session.client.toLowerCase().includes(filteredClient.toLowerCase());
+                    return session.date === dateStr && sessionMatch;
                 });
 
-                const dots = daySessions.map(() => '<div class="session-dot"></div>').join('');
+                const dots = daySessions.map(() => '<span class="session-dot"></span>').join('');
                 
                 html += `<div class="calendar-day ${isToday ? 'today' : ''}" onclick="showDayDetails('${dateStr}')">
                     <div class="day-number">${day}</div>
-                    <div class="session-indicator">${dots}</div>
+                    ${dots}
                 </div>`;
             }
 
             // Jours du mois suivant
-            const totalCells = 42; // 6 semaines
-            const usedCells = startingDayOfWeek + daysInMonth;
-            const remainingCells = totalCells - usedCells - 7; // -7 pour les en-têtes
-            
+            const totalCells = Math.ceil((startingDayOfWeek + daysInMonth) / 7) * 7;
+            const remainingCells = totalCells - (startingDayOfWeek + daysInMonth);
             for (let day = 1; day <= remainingCells; day++) {
                 html += `<div class="calendar-day other-month">
                     <div class="day-number">${day}</div>
@@ -616,27 +793,110 @@
             grid.innerHTML = html;
         }
 
-        // Changer de mois
-        function changeMonth(direction) {
-            currentMonth += direction;
+        // Afficher les détails d'un client
+        function showClientDetails(clientName) {
+            const modal = document.getElementById('clientModal');
+            const title = document.getElementById('clientModalTitle');
+            const details = document.getElementById('clientDetails');
             
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            } else if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
+            title.textContent = `📊 Détails pour ${clientName}`;
             
-            generateCalendar();
+            const clientSessions = sessions.filter(s => s.client === clientName);
+            clientSessions.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+            
+            const stats = getClientStats()[clientName];
+            const nextPayment = 10 - (stats.currentCycle === 10 ? 0 : stats.currentCycle);
+            
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <strong>Total de séances:</strong> ${stats.total}<br>
+                    <strong>Cycle actuel:</strong> ${stats.currentCycle}/10<br>
+                    <strong>Prochaine échéance:</strong> ${nextPayment === 0 ? 'Paiement dû maintenant !' : nextPayment + ' séances restantes'}
+                </div>
+                <div class="sessions-list">
+                    <h4>Historique des séances (toutes modifiables):</h4>
+            `;
+            
+            clientSessions.forEach((session, index) => {
+                const recurringBadge = session.isRecurring ? '🔄 ' : '';
+                const isPast = new Date(session.date) < new Date() ? '(passée)' : '(à venir)';
+                html += `
+                    <div class="session-item">
+                        <span>${recurringBadge}${formatDate(session.date)} à ${session.time} - ${session.type} ${isPast}</span>
+                        <div>
+                            <button class="edit-btn" onclick="editSession(${session.id})">✏️ Modifier</button>
+                            <button class="delete-btn" onclick="deleteSessionById(${session.id})">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            details.innerHTML = html;
+            modal.style.display = 'block';
         }
 
-        // Aller à aujourd'hui
-        function goToToday() {
-            const today = new Date();
-            currentMonth = today.getMonth();
-            currentYear = today.getFullYear();
-            generateCalendar();
+        // Supprimer une séance par ID (NOUVEAU)
+        function deleteSessionById(sessionId) {
+            const session = sessions.find(s => s.id === sessionId);
+            if (!session) return;
+            
+            if (confirm(`Supprimer définitivement la séance de ${session.client} du ${formatDate(session.date)} à ${session.time} ?`)) {
+                sessions = sessions.filter(s => s.id !== sessionId);
+                generateStats();
+                generateCalendar();
+                
+                // Refresh la modale si elle est ouverte
+                const modal = document.getElementById('clientModal');
+                if (modal.style.display === 'block') {
+                    showClientDetails(session.client);
+                }
+                
+                alert('🗑️ Séance supprimée avec succès !');
+            }
+        }
+
+        // Modifier une séance (NOUVEAU)
+        function editSession(sessionId) {
+            const session = sessions.find(s => s.id === sessionId);
+            if (!session) return;
+            
+            const newDate = prompt(`📅 Nouvelle date pour ${session.client}\nFormat: YYYY-MM-DD\nActuel: ${session.date}`, session.date);
+            if (newDate === null) return; // Annulé
+            
+            if (newDate) {
+                const newTime = prompt(`⏰ Nouvelle heure\nFormat: HH:MM\nActuel: ${session.time}`, session.time);
+                if (newTime === null) return; // Annulé
+                
+                if (newTime) {
+                    const newClient = prompt(`👤 Nouveau nom du client\nActuel: ${session.client}`, session.client);
+                    if (newClient === null) return; // Annulé
+                    
+                    if (newClient) {
+                        // Valider les formats
+                        if (!newDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                            alert('❌ Format de date incorrect ! Utilisez YYYY-MM-DD (ex: 2025-01-30)');
+                            return;
+                        }
+                        
+                        if (!newTime.match(/^\d{2}:\d{2}$/)) {
+                            alert('❌ Format d\'heure incorrect ! Utilisez HH:MM (ex: 14:30)');
+                            return;
+                        }
+                        
+                        // Appliquer les modifications
+                        session.date = newDate;
+                        session.time = newTime;
+                        session.client = newClient.trim();
+                        
+                        generateStats();
+                        generateCalendar();
+                        showClientDetails(session.client); // Refresh la modale
+                        
+                        alert('✅ Séance modifiée avec succès !');
+                    }
+                }
+            }
         }
 
         // Formater une date
@@ -645,102 +905,164 @@
             return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
         }
 
-        // Ouvrir les modales
-        function openAddModal() {
-            document.getElementById('addModal').style.display = 'block';
-            document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
-        }
-
-        function openRecurringModal() {
-            document.getElementById('recurringModal').style.display = 'block';
-            document.getElementById('startRecurring').value = new Date().toISOString().split('T')[0];
-        }
-
-        function closeModal() {
-            document.getElementById('addModal').style.display = 'none';
-            document.getElementById('recurringModal').style.display = 'none';
-        }
-
-        // Marquer un paiement comme reçu
-        function markPayment(client) {
-            if (confirm(`Marquer le paiement de ${client} comme reçu ?\nCela va remettre son compteur à zéro.`)) {
-                // Dans un vrai système, on ajusterait la base de données
-                // Ici, on peut ajouter une propriété pour marquer les paiements
-                alert(`✅ Paiement de ${client} marqué comme reçu !`);
-                generateSummaryTable();
-            }
-        }
-
-        // Afficher les détails d'un client
-        function showClientDetails(client) {
-            const clientStats = getClientStats()[client];
-            if (!clientStats) return;
-            
-            const sessionsList = clientStats.sessions.slice(0, 10).map(s => 
-                `• ${formatDate(s.date)} à ${s.time} (${s.type})`
-            ).join('\n');
-            
-            const remaining = 10 - clientStats.currentCycle;
-            const nextPayment = clientStats.currentCycle === 10 ? 
-                'Paiement dû maintenant !' : 
-                `${remaining} séances avant paiement`;
-            
-            alert(`📊 Détails pour ${client}:\n\n` +
-                  `Total: ${clientStats.total} séances\n` +
-                  `Cycle actuel: ${clientStats.currentCycle}/10\n` +
-                  `Statut: ${nextPayment}\n\n` +
-                  `Dernières séances:\n${sessionsList}`);
-        }
-
         // Afficher les détails d'une journée
         function showDayDetails(date) {
             const daySessions = sessions.filter(s => s.date === date);
             if (daySessions.length === 0) return;
             
-            const sessionsList = daySessions.map(s => 
-                `• ${s.client} à ${s.time} (${s.type})`
-            ).join('\n');
+            const sessionDate = new Date(date);
+            const dateStr = sessionDate.getDate() + '/' + (sessionDate.getMonth() + 1) + '/' + sessionDate.getFullYear();
             
-            alert(`📅 Séances du ${formatDate(date)}:\n\n${sessionsList}`);
+            let message = `📅 Séances du ${dateStr}:\n\n`;
+            daySessions.forEach((session, i) => {
+                message += `${i+1}. ${session.client} à ${session.time} (${session.type})\n`;
+            });
+            
+            alert(message);
+        }
+
+        // Gestion des menus déroulants
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            const isVisible = menu.classList.contains('show');
+            
+            // Fermer tous les autres menus
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+            
+            // Toggle le menu actuel
+            if (!isVisible) {
+                menu.classList.add('show');
+            }
+        }
+
+        // Fermer les menus quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        // Nouvelles fonctions pour les menus
+        function openSessionModal() {
+            document.getElementById('sessionModal').style.display = 'block';
+            document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
+            toggleDropdown('sessionsMenu');
+        }
+
+        function openRecurringModal() {
+            document.getElementById('recurringModal').style.display = 'block';
+            document.getElementById('startRecurring').value = new Date().toISOString().split('T')[0];
+            toggleDropdown('sessionsMenu');
+        }
+
+        function showTodaySessions() {
+            const today = new Date().toISOString().split('T')[0];
+            const todaySessions = sessions.filter(s => s.date === today);
+            
+            if (todaySessions.length === 0) {
+                alert('📅 Aucune séance prévue aujourd\'hui');
+            } else {
+                const sessionsList = todaySessions.map(s => `• ${s.client} à ${s.time} (${s.type})`).join('\n');
+                alert(`📅 Séances d'aujourd'hui :\n\n${sessionsList}`);
+            }
+            toggleDropdown('sessionsMenu');
+        }
+
+        function applyDateFilter() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (startDate && endDate) {
+                dateFilter.start = new Date(startDate);
+                dateFilter.end = new Date(endDate);
+                generateStats();
+                alert(`📊 Filtre appliqué du ${formatDate(startDate)} au ${formatDate(endDate)}`);
+            } else {
+                alert('⚠️ Veuillez sélectionner une date de début et de fin');
+            }
+            toggleDropdown('filterMenu');
+        }
+
+        function clearFilters() {
+            dateFilter.start = null;
+            dateFilter.end = null;
+            filteredClient = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            document.getElementById('clientSearch').value = '';
+            generateStats();
+            generateCalendar();
+            alert('🧹 Tous les filtres ont été effacés');
+            toggleDropdown('filterMenu');
+        }
+
+        function showAllClients() {
+            const clientStats = getClientStats();
+            const clientList = Object.keys(clientStats).map(client => {
+                const stats = clientStats[client];
+                return `• ${client}: ${stats.total} séances (${stats.currentCycle}/10)`;
+            }).join('\n');
+            
+            alert(`👥 Tous vos clients :\n\n${clientList}`);
+            toggleDropdown('filterMenu');
+        }
+
+        function showPaymentsDue() {
+            const clientStats = getClientStats();
+            const paymentsDue = Object.keys(clientStats).filter(client => 
+                clientStats[client].currentCycle === 10
+            );
+            
+            if (paymentsDue.length === 0) {
+                alert('✅ Aucun paiement en attente !');
+            } else {
+                const paymentList = paymentsDue.map(client => `• ${client} (10/10 séances)`).join('\n');
+                alert(`💰 Paiements en attente :\n\n${paymentList}`);
+            }
+            toggleDropdown('filterMenu');
         }
 
         // Générer les séances récurrentes
-        function generateRecurringSessions(recurringData) {
+        function generateRecurringSessions() {
             const today = new Date();
-            const endDate = new Date();
-            endDate.setMonth(endDate.getMonth() + 3); // 3 mois à l'avance
+            const futureLimit = new Date();
+            futureLimit.setMonth(futureLimit.getMonth() + 3);
 
-            let currentDate = new Date(recurringData.startDate);
-            
-            // Aller au prochain jour correspondant
-            while (currentDate.getDay() !== parseInt(recurringData.day)) {
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
+            recurringSessions.forEach(recurring => {
+                if (!recurring.active) return;
 
-            // Générer les séances
-            while (currentDate <= endDate) {
-                const dateStr = currentDate.toISOString().split('T')[0];
-                
-                // Vérifier si cette séance n'existe pas déjà
-                const exists = sessions.some(s => 
-                    s.client === recurringData.client && 
-                    s.date === dateStr && 
-                    s.time === recurringData.time
-                );
+                const startDate = new Date(recurring.startDate);
+                const endDate = recurring.endDate ? new Date(recurring.endDate) : futureLimit;
 
-                if (!exists) {
-                    sessions.push({
-                        id: Date.now() + Math.random(),
-                        client: recurringData.client,
-                        date: dateStr,
-                        time: recurringData.time,
-                        type: 'coaching',
-                        isRecurring: true
-                    });
+                let currentDate = new Date(startDate);
+                while (currentDate.getDay() !== parseInt(recurring.day)) {
+                    currentDate.setDate(currentDate.getDate() + 1);
                 }
 
-                currentDate.setDate(currentDate.getDate() + 7); // Semaine suivante
-            }
+                while (currentDate <= endDate) {
+                    const dateStr = currentDate.toISOString().split('T')[0];
+                    
+                    const exists = sessions.some(s => 
+                        s.client === recurring.client && 
+                        s.date === dateStr && 
+                        s.time === recurring.time
+                    );
+
+                    if (!exists) {
+                        sessions.push({
+                            id: Date.now() + Math.random(),
+                            client: recurring.client,
+                            date: dateStr,
+                            time: recurring.time,
+                            type: recurring.type,
+                            isRecurring: true,
+                            recurringId: recurring.id
+                        });
+                    }
+
+                    currentDate.setDate(currentDate.getDate() + 7);
+                }
+            });
         }
 
         // Exporter les données
@@ -761,10 +1083,42 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('📤 Données exportées !');
+            alert('📤 Données exportées avec succès !');
+            toggleDropdown('actionsMenu');
+        }
+
+        function closeModal() {
+            document.getElementById('sessionModal').style.display = 'none';
+            document.getElementById('recurringModal').style.display = 'none';
+            document.getElementById('clientModal').style.display = 'none';
         }
 
         // Event listeners
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.sessions && Array.isArray(data.sessions)) {
+                        sessions = data.sessions;
+                    }
+                    if (data.recurringSessions && Array.isArray(data.recurringSessions)) {
+                        recurringSessions = data.recurringSessions;
+                    }
+                    
+                    generateStats();
+                    generateCalendar();
+                    alert('📥 Données importées avec succès !');
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'importation : fichier invalide');
+                }
+            };
+            reader.readAsText(file);
+        });
+
         document.getElementById('sessionForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -777,38 +1131,57 @@
             };
             
             sessions.push(newSession);
-            generateSummaryTable();
+            generateStats();
             generateCalendar();
             closeModal();
             
             document.getElementById('sessionForm').reset();
-            alert(`✅ Séance ajoutée pour ${newSession.client}`);
         });
 
         document.getElementById('recurringForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const recurringData = {
+            const newRecurring = {
+                id: Date.now(),
                 client: document.getElementById('recurringClient').value,
                 day: document.getElementById('recurringDay').value,
                 time: document.getElementById('recurringTime').value,
-                startDate: document.getElementById('startRecurring').value
+                type: document.getElementById('recurringType').value,
+                startDate: document.getElementById('startRecurring').value,
+                endDate: document.getElementById('endRecurring').value || null,
+                active: true
             };
             
-            generateRecurringSessions(recurringData);
-            generateSummaryTable();
+            recurringSessions.push(newRecurring);
+            generateRecurringSessions();
+            generateStats();
             generateCalendar();
             closeModal();
             
             document.getElementById('recurringForm').reset();
             
             const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-            alert(`🔄 Séances récurrentes créées pour ${recurringData.client} tous les ${dayNames[recurringData.day]} à ${recurringData.time}`);
+            alert(`🔄 Séances récurrentes créées pour ${newRecurring.client} tous les ${dayNames[newRecurring.day]} à ${newRecurring.time} !`);
         });
 
         document.getElementById('clientSearch').addEventListener('input', (e) => {
             filteredClient = e.target.value;
-            generateSummaryTable();
+            generateStats();
+            generateCalendar();
+        });
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        });
+
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            currentDate = new Date();
             generateCalendar();
         });
 
@@ -821,8 +1194,9 @@
 
         // Initialisation
         try {
-            initData();
-            generateSummaryTable();
+            initSampleData();
+            generateRecurringSessions();
+            generateStats();
             generateCalendar();
             console.log('✅ Application chargée avec succès');
         } catch (error) {
