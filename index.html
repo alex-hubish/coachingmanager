@@ -22,7 +22,7 @@
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 0.75rem;
+            padding: 1rem;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -34,90 +34,15 @@
             font-size: 1.5rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
         
-        .header-actions {
+        .controls {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
             justify-content: center;
-        }
-        
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .dropdown-toggle {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-height: 44px;
-        }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            min-width: 200px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            z-index: 1001;
-            display: none;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .dropdown-menu.show {
-            display: block;
-        }
-        
-        .dropdown-item {
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: none;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            font-size: 0.9rem;
-            color: #374151;
-        }
-        
-        .dropdown-item:hover {
-            background: #f3f4f6;
-        }
-        
-        .search-bar {
-            display: flex;
-            gap: 0.5rem;
-            flex-direction: column;
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            margin-bottom: 1rem;
         }
         
         .btn {
@@ -128,30 +53,34 @@
             font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            text-align: center;
             min-height: 44px;
         }
         
         .btn-primary { background: #2563eb; color: white; }
         .btn-success { background: #059669; color: white; }
-        .btn-warning { background: #d97706; color: white; }
         .btn-danger { background: #dc2626; color: white; }
+        .btn-warning { background: #d97706; color: white; }
         
-        .btn:hover {
-            transform: translateY(-2px);
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            min-width: 200px;
         }
         
         .container {
             max-width: 1200px;
             margin: 1rem auto;
-            padding: 0 0.75rem;
+            padding: 0 1rem;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
         
         .stat-card {
@@ -160,7 +89,6 @@
             padding: 1rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.18);
             cursor: pointer;
             transition: transform 0.3s ease;
         }
@@ -171,7 +99,7 @@
         
         .stat-card h3 {
             color: #2563eb;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             font-size: 1.1rem;
         }
         
@@ -183,16 +111,6 @@
             background: #f8fafc;
             border-radius: 8px;
             margin-bottom: 0.5rem;
-        }
-        
-        .client-name {
-            font-weight: 600;
-            color: #1e293b;
-        }
-        
-        .session-count {
-            font-weight: 700;
-            color: #059669;
         }
         
         .payment-status {
@@ -218,78 +136,6 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
-        }
-        
-        .calendar-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        
-        .calendar-nav {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background: #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .calendar-day {
-            background: white;
-            padding: 0.5rem;
-            min-height: 70px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .calendar-day:hover {
-            background: #f8fafc;
-        }
-        
-        .calendar-day.other-month {
-            background: #f8fafc;
-            color: #9ca3af;
-        }
-        
-        .calendar-day.today {
-            background: #eff6ff;
-            border: 2px solid #2563eb;
-        }
-        
-        .day-number {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .session-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #2563eb;
-            display: inline-block;
-            margin: 1px;
         }
         
         .modal {
@@ -333,7 +179,6 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #374151;
         }
         
         .form-group input, .form-group select {
@@ -356,88 +201,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem;
+            padding: 0.75rem;
             border-bottom: 1px solid #f3f4f6;
+            background: #f8fafc;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
         }
         
-        .session-item:last-child {
-            border-bottom: none;
-        }
-        
-        .delete-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            margin-left: 0.25rem;
-        }
-        
-        .edit-btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.875rem;
+        .debug-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2563eb;
         }
         
         @media (max-width: 768px) {
-            .header-actions {
-                gap: 0.5rem;
-                justify-content: stretch;
-            }
-            
-            .dropdown {
-                flex: 1;
-            }
-            
-            .dropdown-toggle {
-                width: 100%;
-                justify-content: space-between;
-                font-size: 0.85rem;
-                padding: 0.6rem;
-            }
-            
-            .dropdown-menu {
-                min-width: 100%;
-                left: 0;
-                right: 0;
-            }
-            
-            .dropdown-item {
-                padding: 1rem;
-                font-size: 0.9rem;
-                text-align: center;
+            .controls {
+                flex-direction: column;
             }
             
             .stats-grid {
                 grid-template-columns: 1fr;
-                gap: 0.75rem;
-                margin-bottom: 1rem;
-            }
-            
-            .calendar-header {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-            
-            .calendar-day {
-                min-height: 50px;
-                padding: 0.25rem;
-                font-size: 0.8rem;
             }
             
             .session-item {
                 flex-direction: column;
-                align-items: stretch;
-                text-align: center;
                 gap: 0.5rem;
-                padding: 0.75rem;
+                text-align: center;
             }
         }
     </style>
@@ -445,432 +236,189 @@
 <body>
     <div class="header">
         <h1>🎯 Coaching Manager</h1>
-        
-        <div class="header-actions">
-            <!-- Menu Actions -->
-            <div class="dropdown">
-                <button class="dropdown-toggle" onclick="toggleDropdown('actionsMenu')">
-                    ⚙️ Actions <span>▼</span>
-                </button>
-                <div id="actionsMenu" class="dropdown-menu">
-                    <button class="dropdown-item" onclick="requestNotificationPermission()">🔔 Activer notifications</button>
-                    <button class="dropdown-item" onclick="exportData()">📤 Exporter données</button>
-                    <button class="dropdown-item" onclick="document.getElementById('fileInput').click()">📥 Importer données</button>
-                    <button class="dropdown-item" onclick="window.location.reload()">🔄 Actualiser</button>
-                </div>
-            </div>
-
-            <!-- Menu Séances -->
-            <div class="dropdown">
-                <button class="dropdown-toggle btn-success" onclick="toggleDropdown('sessionsMenu')" style="background: #059669;">
-                    ➕ Séances <span>▼</span>
-                </button>
-                <div id="sessionsMenu" class="dropdown-menu">
-                    <button class="dropdown-item" onclick="openSessionModal()">📅 Nouvelle séance</button>
-                    <button class="dropdown-item" onclick="openRecurringModal()">🔄 Séance récurrente</button>
-                    <button class="dropdown-item" onclick="showTodaySessions()">📋 Séances du jour</button>
-                </div>
-            </div>
-
-            <input type="file" id="fileInput" style="display: none;" accept=".json">
-        </div>
-        
-        <div class="search-bar">
+        <div class="controls">
             <input type="text" id="clientSearch" class="search-input" placeholder="🔍 Rechercher un client">
-            
-            <!-- Menu Filtre -->
-            <div class="dropdown" style="width: 100%;">
-                <button class="dropdown-toggle" onclick="toggleDropdown('filterMenu')" style="width: 100%; justify-content: space-between;">
-                    📊 Filtres & Options <span>▼</span>
-                </button>
-                <div id="filterMenu" class="dropdown-menu" style="width: 100%;">
-                    <div style="padding: 0.75rem; border-bottom: 1px solid #e5e7eb;">
-                        <label style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem; display: block;">Période :</label>
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                            <input type="date" id="startDate" style="flex: 1; padding: 0.5rem; font-size: 0.85rem; border: 1px solid #e5e7eb; border-radius: 4px;">
-                            <input type="date" id="endDate" style="flex: 1; padding: 0.5rem; font-size: 0.85rem; border: 1px solid #e5e7eb; border-radius: 4px;">
-                        </div>
-                        <button onclick="applyDateFilter()" class="btn btn-primary" style="width: 100%; padding: 0.5rem;">Appliquer le filtre</button>
-                    </div>
-                    <button class="dropdown-item" onclick="clearFilters()">🧹 Effacer les filtres</button>
-                    <button class="dropdown-item" onclick="showAllClients()">👥 Voir tous les clients</button>
-                    <button class="dropdown-item" onclick="showPaymentsDue()">💰 Paiements dus</button>
-                    <button class="dropdown-item" onclick="showPaymentHistory()">📜 Historique paiements</button>
-                    <button class="dropdown-item" onclick="debugStorage()">🔧 Debug sauvegarde</button>
-                    <button class="dropdown-item" onclick="clearAllData()">🗑️ Effacer tout</button>
-                </div>
-            </div>
+            <button onclick="addSession()" class="btn btn-success">+ Ajouter séance</button>
+            <button onclick="testLocalStorage()" class="btn btn-warning">🔧 Test sauvegarde</button>
+            <button onclick="clearAllData()" class="btn btn-danger">🗑️ Tout effacer</button>
+            <button onclick="exportData()" class="btn btn-primary">📤 Export</button>
         </div>
     </div>
 
     <div class="container">
-        <div id="statsContainer" class="stats-grid">
-            <!-- Les statistiques seront générées ici -->
+        <div id="debugInfo" class="debug-panel">
+            <strong>🔍 État de la sauvegarde :</strong> <span id="debugStatus">Vérification...</span>
         </div>
 
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <h2 id="currentMonth">Loading...</h2>
-                <div class="calendar-nav">
-                    <button id="prevMonth" class="btn btn-primary">‹</button>
-                    <button id="todayBtn" class="btn btn-primary">Aujourd'hui</button>
-                    <button id="nextMonth" class="btn btn-primary">›</button>
-                </div>
-            </div>
-            <div class="calendar-grid" id="calendarGrid">
-                <!-- Le calendrier sera généré ici -->
-            </div>
+        <div id="statsContainer" class="stats-grid">
+            <!-- Les statistiques seront générées ici -->
         </div>
     </div>
 
     <!-- Modal pour ajouter une séance -->
-    <div id="sessionModal" class="modal">
+    <div id="addModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <h3>Ajouter une séance</h3>
             <form id="sessionForm">
                 <div class="form-group">
-                    <label for="clientName">Nom du client :</label>
+                    <label>Client :</label>
                     <input type="text" id="clientName" required>
                 </div>
                 <div class="form-group">
-                    <label for="sessionDate">Date :</label>
+                    <label>Date :</label>
                     <input type="date" id="sessionDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="sessionTime">Heure :</label>
+                    <label>Heure :</label>
                     <input type="time" id="sessionTime" required>
                 </div>
-                <div class="form-group">
-                    <label for="sessionType">Type de séance :</label>
-                    <select id="sessionType">
-                        <option value="coaching">Coaching individuel</option>
-                        <option value="group">Coaching de groupe</option>
-                        <option value="consultation">Consultation</option>
-                    </select>
-                </div>
-                <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <input type="checkbox" id="enableReminder" checked>
-                    <label for="enableReminder" style="margin: 0;">🔔 Notification de rappel (30 min avant)</label>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Ajouter la séance</button>
+                <button type="submit" class="btn btn-success" style="width: 100%;">Ajouter et sauvegarder</button>
             </form>
         </div>
     </div>
 
-    <!-- Modal pour séances récurrentes -->
-    <div id="recurringModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h3>🔄 Créer une séance récurrente</h3>
-            <form id="recurringForm">
-                <div class="form-group">
-                    <label for="recurringClient">Nom du client :</label>
-                    <input type="text" id="recurringClient" required>
-                </div>
-                <div class="form-group">
-                    <label for="recurringDay">Jour de la semaine :</label>
-                    <select id="recurringDay" required>
-                        <option value="1">Lundi</option>
-                        <option value="2">Mardi</option>
-                        <option value="3">Mercredi</option>
-                        <option value="4">Jeudi</option>
-                        <option value="5">Vendredi</option>
-                        <option value="6">Samedi</option>
-                        <option value="0">Dimanche</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="recurringTime">Heure :</label>
-                    <input type="time" id="recurringTime" required>
-                </div>
-                <div class="form-group">
-                    <label for="recurringType">Type de séance :</label>
-                    <select id="recurringType">
-                        <option value="coaching">Coaching individuel</option>
-                        <option value="group">Coaching de groupe</option>
-                        <option value="consultation">Consultation</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="startRecurring">Commencer à partir du :</label>
-                    <input type="date" id="startRecurring" required>
-                </div>
-                <div class="form-group">
-                    <label for="endRecurring">Jusqu'au (optionnel) :</label>
-                    <input type="date" id="endRecurring">
-                </div>
-                <button type="submit" class="btn btn-success" style="width: 100%;">Créer les séances récurrentes</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal pour voir les détails d'un client -->
+    <!-- Modal détails client -->
     <div id="clientModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h3 id="clientModalTitle">Détails client</h3>
-            <div id="clientDetails">
-                <!-- Les détails seront générés ici -->
-            </div>
+            <h3 id="clientTitle">Détails client</h3>
+            <div id="clientDetails"></div>
         </div>
     </div>
 
     <script>
-        // Variables globales
+        // Variables globales SIMPLIFIÉES
         let sessions = [];
-        let recurringSessions = [];
-        let payments = []; 
-        let currentDate = new Date();
         let filteredClient = '';
-        let dateFilter = { start: null, end: null };
-        let notificationsEnabled = false;
 
-        // Sauvegarder automatiquement à chaque modification
-        function autoSave() {
+        // SAUVEGARDE ULTRA-SIMPLE
+        function save() {
             try {
-                const data = {
-                    sessions: sessions,
-                    recurringSessions: recurringSessions,
-                    payments: payments,
-                    notificationsEnabled: notificationsEnabled,
-                    lastSaved: new Date().toISOString()
-                };
-                localStorage.setItem('coachingManagerData', JSON.stringify(data));
-                console.log('💾 Sauvegarde:', sessions.length, 'séances,', payments.length, 'paiements');
-                
-                // Test immédiat de lecture
-                const test = localStorage.getItem('coachingManagerData');
+                localStorage.setItem('coaching_sessions', JSON.stringify(sessions));
+                const test = localStorage.getItem('coaching_sessions');
                 if (test) {
-                    console.log('✅ Sauvegarde confirmée dans localStorage');
-                } else {
-                    console.error('❌ Échec sauvegarde localStorage');
-                }
-            } catch (error) {
-                console.error('❌ Erreur sauvegarde:', error);
-                alert('⚠️ Impossible de sauvegarder automatiquement. Utilisez Export/Import.');
-            }
-        }
-
-        // Charger les données sauvegardées au démarrage
-        function loadSavedData() {
-            try {
-                console.log('🔍 Recherche de données sauvegardées...');
-                const saved = localStorage.getItem('coachingManagerData');
-                
-                if (saved) {
-                    console.log('📂 Données trouvées, chargement...');
-                    const data = JSON.parse(saved);
-                    
-                    // Charger chaque type de données
-                    if (data.sessions && Array.isArray(data.sessions)) {
-                        sessions = data.sessions;
-                        console.log('✅ Chargé', sessions.length, 'séances');
-                    }
-                    if (data.recurringSessions && Array.isArray(data.recurringSessions)) {
-                        recurringSessions = data.recurringSessions;
-                        console.log('✅ Chargé', recurringSessions.length, 'récurrences');
-                    }
-                    if (data.payments && Array.isArray(data.payments)) {
-                        payments = data.payments;
-                        console.log('✅ Chargé', payments.length, 'paiements');
-                    }
-                    if (typeof data.notificationsEnabled === 'boolean') {
-                        notificationsEnabled = data.notificationsEnabled;
-                    }
-                    
-                    console.log('📂 Toutes les données chargées depuis la sauvegarde');
+                    updateDebugInfo(`✅ Sauvegardé: ${sessions.length} séances`);
                     return true;
                 } else {
-                    console.log('📝 Aucune sauvegarde trouvée');
+                    updateDebugInfo(`❌ Échec sauvegarde`);
                     return false;
                 }
             } catch (error) {
-                console.error('❌ Erreur chargement:', error);
+                updateDebugInfo(`❌ Erreur: ${error.message}`);
                 return false;
             }
         }
 
-        // Initialisation de données d'exemple (seulement si pas de sauvegarde)
-        function initSampleData() {
-            const sampleSessions = [
-                { id: 1, client: 'Théo', date: '2025-01-15', time: '10:00', type: 'coaching', hasReminder: true },
-                { id: 2, client: 'Théo', date: '2025-01-10', time: '14:00', type: 'coaching', hasReminder: true },
-                { id: 3, client: 'Marie', date: '2025-01-12', time: '09:00', type: 'consultation', hasReminder: true },
-                { id: 4, client: 'Jean', date: '2025-01-14', time: '16:00', type: 'group', hasReminder: false },
-                { id: 5, client: 'Théo', date: '2024-11-20', time: '10:00', type: 'coaching', hasReminder: true },
-                { id: 6, client: 'Sophie', date: '2025-01-18', time: '11:00', type: 'coaching', hasReminder: true },
-                { id: 7, client: 'Théo', date: '2025-01-22', time: '10:00', type: 'coaching', hasReminder: true },
-                { id: 8, client: 'Théo', date: '2025-01-29', time: '10:00', type: 'coaching', hasReminder: true }
-            ];
-            sessions = sampleSessions;
-
-            const sampleRecurring = [
-                { id: 1, client: 'Théo', day: 1, time: '10:00', type: 'coaching', startDate: '2025-01-01', endDate: null, active: true }
-            ];
-            recurringSessions = sampleRecurring;
-            
-            console.log('📝 Données d\'exemple chargées');
-        }
-
-        // Demander les permissions de notification
-        async function requestNotificationPermission() {
-            if ('Notification' in window) {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    notificationsEnabled = true;
-                    autoSave(); // Sauvegarder
-                    alert('🎉 Notifications activées ! Vous recevrez des rappels 30 min avant vos séances.');
-                    checkForNotifications();
+        // CHARGEMENT ULTRA-SIMPLE
+        function load() {
+            try {
+                const saved = localStorage.getItem('coaching_sessions');
+                if (saved) {
+                    sessions = JSON.parse(saved);
+                    updateDebugInfo(`✅ Chargé: ${sessions.length} séances depuis localStorage`);
+                    return true;
                 } else {
-                    alert('Les notifications ont été refusées.');
+                    updateDebugInfo(`📝 Aucune donnée sauvée - démarrage vierge`);
+                    return false;
                 }
-            }
-            toggleDropdown('actionsMenu');
-        }
-
-        // Afficher une notification
-        function showNotification(title, body) {
-            if (notificationsEnabled && 'Notification' in window) {
-                new Notification(title, {
-                    body: body,
-                    icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjVDMTcuMyA2LjcgMTkuOCAxMC4xIDIwIDEzLjhWMTZDMjAuNCAxNi45IDIxIDE3LjYgMjIgMThIMkMyLjkgMTcuNiAzLjYgMTYuOSA0IDE2VjEzLjhDNC4yIDEwLjEgNi43IDYuNyAxMCA1VjRDMTAgMi45IDEwLjkgMiAxMiAyWiIgZmlsbD0iIzI1NjNlYiIvPjwvc3ZnPg==',
-                    requireInteraction: true
-                });
+            } catch (error) {
+                updateDebugInfo(`❌ Erreur chargement: ${error.message}`);
+                return false;
             }
         }
 
-        // Vérifier les notifications à envoyer
-        function checkForNotifications() {
-            if (!notificationsEnabled) return;
+        // Mettre à jour l'info de debug
+        function updateDebugInfo(message) {
+            document.getElementById('debugStatus').textContent = message;
+            console.log('🔧 DEBUG:', message);
+        }
+
+        // Tester localStorage
+        function testLocalStorage() {
+            const testData = { test: 'test', timestamp: Date.now() };
             
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
-            const currentTime = now.getHours() * 60 + now.getMinutes();
-
-            sessions.forEach(session => {
-                if (session.date === today && session.hasReminder) {
-                    const [hours, minutes] = session.time.split(':').map(Number);
-                    const sessionTime = hours * 60 + minutes;
-                    const timeDiff = sessionTime - currentTime;
-
-                    // Notification 30 minutes avant (entre 25 et 35 minutes pour éviter les doublons)
-                    if (timeDiff >= 25 && timeDiff <= 35 && !session.notified) {
-                        showNotification(
-                            `🎯 Séance dans ${Math.round(timeDiff)} minutes`,
-                            `Coaching avec ${session.client} à ${session.time}`
-                        );
-                        session.notified = true;
-                        console.log(`🔔 Notification envoyée pour ${session.client} à ${session.time}`);
-                    }
+            try {
+                // Test écriture
+                localStorage.setItem('test_coaching', JSON.stringify(testData));
+                
+                // Test lecture
+                const readTest = localStorage.getItem('test_coaching');
+                
+                if (readTest) {
+                    const parsed = JSON.parse(readTest);
+                    localStorage.removeItem('test_coaching');
+                    
+                    alert(`✅ LOCALSTORAGE FONCTIONNE !\n\n` +
+                          `✅ Écriture: OK\n` +
+                          `✅ Lecture: OK\n` +
+                          `✅ Parsing: OK\n\n` +
+                          `📊 Séances actuelles: ${sessions.length}\n` +
+                          `💾 Dernière sauvegarde: ${localStorage.getItem('coaching_sessions') ? 'Trouvée' : 'Aucune'}`);
+                } else {
+                    alert('❌ LocalStorage ne fonctionne pas - Lecture impossible');
                 }
-            });
-
-            // Vérifier les paiements dus
-            const clientStats = getClientStats();
-            Object.keys(clientStats).forEach(client => {
-                const stats = clientStats[client];
-                if (stats.currentCycle === 10 && !stats.paymentNotified) {
-                    showNotification(
-                        `💰 Paiement dû - ${client}`,
-                        `${client} a atteint 10 séances et doit effectuer son paiement.`
-                    );
-                    stats.paymentNotified = true;
-                }
-            });
+            } catch (error) {
+                alert(`❌ LocalStorage ne fonctionne pas:\n\n${error.message}`);
+            }
         }
 
-        // Calculer les statistiques par client
+        // Calculer stats simplifiées
         function getClientStats() {
-            const clientStats = {};
-
+            const stats = {};
             sessions.forEach(session => {
-                if (!clientStats[session.client]) {
-                    clientStats[session.client] = {
-                        total: 0,
-                        currentCycle: 0,
-                        filtered: 0,
-                        sessions: [],
-                        completedCycles: 0, // NOUVEAU: Cycles de 10 complétés
-                        unpaidCycles: 0     // NOUVEAU: Cycles non payés
-                    };
+                if (!stats[session.client]) {
+                    stats[session.client] = { total: 0, sessions: [] };
                 }
-                clientStats[session.client].total++;
-                clientStats[session.client].sessions.push(session);
-
-                // Sessions dans le cycle actuel (modulo 10)
-                clientStats[session.client].currentCycle = clientStats[session.client].total % 10;
-                if (clientStats[session.client].currentCycle === 0) {
-                    clientStats[session.client].currentCycle = 10;
-                }
-
-                // Sessions filtrées par date
-                if (dateFilter.start && dateFilter.end) {
-                    const sessionDate = new Date(session.date);
-                    if (sessionDate >= dateFilter.start && sessionDate <= dateFilter.end) {
-                        clientStats[session.client].filtered++;
-                    }
-                }
+                stats[session.client].total++;
+                stats[session.client].sessions.push(session);
             });
-
-            // Calculer les cycles payés/non payés
-            Object.keys(clientStats).forEach(client => {
-                const total = clientStats[client].total;
-                const completedCycles = Math.floor(total / 10);
-                clientStats[client].completedCycles = completedCycles;
-                
-                // Vérifier combien de cycles ont été payés
-                const clientPayments = payments.filter(p => p.client === client);
-                const paidCycles = clientPayments.length;
-                clientStats[client].unpaidCycles = completedCycles - paidCycles;
-                
-                // Trier les séances par date décroissante
-                clientStats[client].sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            Object.keys(stats).forEach(client => {
+                const total = stats[client].total;
+                stats[client].currentCycle = total % 10 === 0 ? 10 : total % 10;
+                stats[client].sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
             });
-
-            return clientStats;
+            
+            return stats;
         }
 
         // Générer les statistiques
         function generateStats() {
             const container = document.getElementById('statsContainer');
             const clientStats = getClientStats();
+            
+            if (Object.keys(clientStats).length === 0) {
+                container.innerHTML = `
+                    <div style="background: white; padding: 2rem; border-radius: 16px; text-align: center; grid-column: 1 / -1;">
+                        <h3>🎯 Aucune séance enregistrée</h3>
+                        <p>Cliquez sur "+ Ajouter séance" pour commencer</p>
+                    </div>
+                `;
+                return;
+            }
 
             let html = '';
             Object.keys(clientStats).forEach(client => {
                 if (!filteredClient || client.toLowerCase().includes(filteredClient.toLowerCase())) {
                     const stats = clientStats[client];
                     const paymentDue = stats.currentCycle === 10;
-                    const hasUnpaidCycles = stats.unpaidCycles > 0;
-                    const filteredText = dateFilter.start && dateFilter.end ? 
-                        `<p><strong>Période sélectionnée:</strong> ${stats.filtered} séances</p>` : '';
-                    
-                    // NOUVEAU: Informations de paiement
-                    const paymentInfo = stats.completedCycles > 0 ? 
-                        `<div class="client-info">
-                            <span class="client-name">Paiements</span>
-                            <span class="session-count">${stats.completedCycles - stats.unpaidCycles}/${stats.completedCycles}
-                                ${hasUnpaidCycles ? '<span style="color: #dc2626; font-size: 0.8rem;">⚠️ en retard</span>' : ''}
-                            </span>
-                        </div>` : '';
                     
                     html += `
-                        <div class="stat-card" onclick="showClientDetails('${client}')">
+                        <div class="stat-card" onclick="showClient('${client}')">
                             <h3>👤 ${client}</h3>
                             <div class="client-info">
-                                <span class="client-name">Total séances</span>
-                                <span class="session-count">${stats.total}</span>
+                                <span><strong>Total séances</strong></span>
+                                <span><strong>${stats.total}</strong></span>
                             </div>
                             <div class="client-info">
-                                <span class="client-name">Cycle actuel</span>
-                                <span class="session-count">${stats.currentCycle}/10
+                                <span><strong>Cycle actuel</strong></span>
+                                <span><strong>${stats.currentCycle}/10</strong>
                                     <span class="payment-status ${paymentDue ? 'payment-due' : 'payment-ok'}">
                                         ${paymentDue ? '💰 Paiement dû' : '✅ OK'}
                                     </span>
                                 </span>
                             </div>
-                            ${paymentInfo}
-                            ${filteredText}
                         </div>
                     `;
                 }
@@ -879,138 +427,34 @@
             container.innerHTML = html;
         }
 
-        // Générer le calendrier
-        function generateCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const monthHeader = document.getElementById('currentMonth');
-            
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-                             'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-            monthHeader.textContent = months[month] + ' ' + year;
-
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            const startingDayOfWeek = firstDay.getDay();
-
-            let html = '';
-            
-            // En-têtes des jours
-            const dayHeaders = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-            dayHeaders.forEach(day => {
-                html += `<div class="calendar-day" style="background: #2563eb; color: white; text-align: center; font-weight: bold;">${day}</div>`;
-            });
-
-            // Jours du mois précédent
-            const prevMonthDays = new Date(year, month, 0).getDate();
-            for (let i = startingDayOfWeek - 1; i >= 0; i--) {
-                html += `<div class="calendar-day other-month">
-                    <div class="day-number">${prevMonthDays - i}</div>
-                </div>`;
-            }
-
-            // Jours du mois actuel
-            for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(year, month, day);
-                const dateStr = date.toISOString().split('T')[0];
-                const isToday = date.toDateString() === new Date().toDateString();
-                
-                // Compter les séances pour ce jour
-                const daySessions = sessions.filter(session => {
-                    const sessionMatch = !filteredClient || session.client.toLowerCase().includes(filteredClient.toLowerCase());
-                    return session.date === dateStr && sessionMatch;
-                });
-
-                const dots = daySessions.map(() => '<span class="session-dot"></span>').join('');
-                
-                html += `<div class="calendar-day ${isToday ? 'today' : ''}" onclick="showDayDetails('${dateStr}')">
-                    <div class="day-number">${day}</div>
-                    ${dots}
-                </div>`;
-            }
-
-            // Jours du mois suivant
-            const totalCells = Math.ceil((startingDayOfWeek + daysInMonth) / 7) * 7;
-            const remainingCells = totalCells - (startingDayOfWeek + daysInMonth);
-            for (let day = 1; day <= remainingCells; day++) {
-                html += `<div class="calendar-day other-month">
-                    <div class="day-number">${day}</div>
-                </div>`;
-            }
-
-            grid.innerHTML = html;
-        }
-
         // Afficher les détails d'un client
-        function showClientDetails(clientName) {
+        function showClient(client) {
             const modal = document.getElementById('clientModal');
-            const title = document.getElementById('clientModalTitle');
+            const title = document.getElementById('clientTitle');
             const details = document.getElementById('clientDetails');
             
-            title.textContent = `📊 Détails pour ${clientName}`;
+            title.textContent = `📊 ${client}`;
             
-            const clientSessions = sessions.filter(s => s.client === clientName);
-            clientSessions.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
-            
-            const stats = getClientStats()[clientName];
-            const nextPayment = 10 - (stats.currentCycle === 10 ? 0 : stats.currentCycle);
-            
-            // NOUVEAU: Historique des paiements
-            const clientPayments = payments.filter(p => p.client === clientName);
-            clientPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            let paymentHistory = '';
-            if (clientPayments.length > 0) {
-                paymentHistory = `
-                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                        <h4>💰 Historique des paiements :</h4>
-                        ${clientPayments.map(p => `
-                            <div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
-                                <span>Cycle ${p.cycle} - ${formatDate(p.date)}</span>
-                                <span style="color: #059669; font-weight: bold;">${p.amount || 'Montant non spécifié'}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
+            const clientSessions = sessions.filter(s => s.client === client);
+            clientSessions.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             let html = `
-                <div style="margin-bottom: 1rem;">
-                    <strong>Total de séances:</strong> ${stats.total}<br>
-                    <strong>Cycle actuel:</strong> ${stats.currentCycle}/10<br>
-                    <strong>Cycles complétés:</strong> ${stats.completedCycles}<br>
-                    <strong>Cycles payés:</strong> ${stats.completedCycles - stats.unpaidCycles}/${stats.completedCycles}<br>
-                    <strong>Prochaine échéance:</strong> ${nextPayment === 0 ? 'Paiement dû maintenant !' : nextPayment + ' séances restantes'}
-                    
-                    ${stats.currentCycle === 10 ? `
-                        <div style="margin-top: 1rem;">
-                            <button onclick="markPaymentReceived('${clientName}')" class="btn btn-success" style="width: 100%;">
-                                💰 Marquer le paiement comme reçu
-                            </button>
-                        </div>
-                    ` : ''}
+                <div style="margin-bottom: 1rem; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                    <strong>Total:</strong> ${clientSessions.length} séances<br>
+                    <strong>Cycle:</strong> ${clientSessions.length % 10 === 0 ? 10 : clientSessions.length % 10}/10
                 </div>
                 
-                ${paymentHistory}
-                
                 <div class="sessions-list">
-                    <h4>Historique des séances (toutes modifiables):</h4>
+                    <h4>📅 Toutes les séances :</h4>
             `;
             
-            clientSessions.forEach((session, index) => {
-                const recurringBadge = session.isRecurring ? '🔄 ' : '';
-                const reminderBadge = session.hasReminder ? '🔔 ' : '';
-                const isPast = new Date(session.date) < new Date() ? '(passée)' : '(à venir)';
+            clientSessions.forEach(session => {
                 html += `
                     <div class="session-item">
-                        <span>${recurringBadge}${reminderBadge}${formatDate(session.date)} à ${session.time} - ${session.type} ${isPast}</span>
-                        <div>
-                            <button class="edit-btn" onclick="editSession(${session.id})">✏️ Modifier</button>
-                            <button class="delete-btn" onclick="deleteSessionById(${session.id})">🗑️ Supprimer</button>
-                        </div>
+                        <span><strong>${formatDate(session.date)}</strong> à ${session.time}</span>
+                        <button onclick="deleteSession(${session.id})" class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
+                            🗑️ Supprimer
+                        </button>
                     </div>
                 `;
             });
@@ -1020,73 +464,75 @@
             modal.style.display = 'block';
         }
 
-        // Supprimer une séance par ID
-        function deleteSessionById(sessionId) {
+        // Ajouter une séance
+        function addSession() {
+            document.getElementById('addModal').style.display = 'block';
+            document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
+        }
+
+        // Supprimer une séance
+        function deleteSession(sessionId) {
             const session = sessions.find(s => s.id === sessionId);
             if (!session) return;
             
-            if (confirm(`Supprimer définitivement la séance de ${session.client} du ${formatDate(session.date)} à ${session.time} ?`)) {
+            if (confirm(`🗑️ Supprimer la séance de ${session.client} du ${formatDate(session.date)} ?`)) {
+                console.log(`🗑️ Suppression séance ID ${sessionId}`);
+                
+                // Supprimer de la liste
+                const oldLength = sessions.length;
                 sessions = sessions.filter(s => s.id !== sessionId);
-                autoSave(); // Sauvegarder immédiatement
-                generateStats();
-                generateCalendar();
+                console.log(`📊 Séances avant: ${oldLength}, après: ${sessions.length}`);
                 
-                // Refresh la modale si elle est ouverte
-                const modal = document.getElementById('clientModal');
-                if (modal.style.display === 'block') {
-                    showClientDetails(session.client);
+                // Sauvegarder IMMÉDIATEMENT
+                const saved = save();
+                
+                if (saved) {
+                    generateStats();
+                    showClient(session.client); // Refresh la modale
+                    alert(`✅ Séance supprimée ET SAUVEGARDÉE !\n\n🔍 Actualisez la page pour tester la persistance.`);
+                } else {
+                    alert(`❌ Séance supprimée mais SAUVEGARDE ÉCHOUÉE !\n\n⚠️ La séance reviendra à l'actualisation.`);
                 }
-                
-                alert('🗑️ Séance supprimée définitivement !');
             }
         }
 
-        // Modifier une séance (NOUVEAU)
-        function editSession(sessionId) {
-            const session = sessions.find(s => s.id === sessionId);
-            if (!session) return;
-            
-            const newDate = prompt(`📅 Nouvelle date pour ${session.client}\nFormat: YYYY-MM-DD\nActuel: ${session.date}`, session.date);
-            if (newDate === null) return; // Annulé
-            
-            if (newDate) {
-                const newTime = prompt(`⏰ Nouvelle heure\nFormat: HH:MM\nActuel: ${session.time}`, session.time);
-                if (newTime === null) return; // Annulé
-                
-                if (newTime) {
-                    const newClient = prompt(`👤 Nouveau nom du client\nActuel: ${session.client}`, session.client);
-                    if (newClient === null) return; // Annulé
+        // Effacer toutes les données
+        function clearAllData() {
+            if (confirm('🗑️ EFFACER COMPLÈTEMENT TOUT ?\n\nCette action supprime :\n- Toutes les séances\n- Toute la sauvegarde localStorage\n\nIrréversible !')) {
+                try {
+                    // Vider les données
+                    sessions = [];
                     
-                    if (newClient) {
-                        const enableReminder = confirm(`🔔 Activer les notifications de rappel pour cette séance ?\n(Rappel 30 minutes avant)\n\nActuel: ${session.hasReminder ? 'Activé' : 'Désactivé'}`);
-                        
-                        // Valider les formats
-                        if (!newDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                            alert('❌ Format de date incorrect ! Utilisez YYYY-MM-DD (ex: 2025-01-30)');
-                            return;
-                        }
-                        
-                        if (!newTime.match(/^\d{2}:\d{2}$/)) {
-                            alert('❌ Format d\'heure incorrect ! Utilisez HH:MM (ex: 14:30)');
-                            return;
-                        }
-                        
-                        // Appliquer les modifications
-                        session.date = newDate;
-                        session.time = newTime;
-                        session.client = newClient.trim();
-                        session.hasReminder = enableReminder;
-                        session.notified = false; // Reset le statut de notification
-                        
-                        autoSave(); // Sauvegarder immédiatement
+                    // Effacer localStorage
+                    localStorage.removeItem('coaching_sessions');
+                    
+                    // Vérifier que c'est bien effacé
+                    const test = localStorage.getItem('coaching_sessions');
+                    if (!test) {
+                        updateDebugInfo('🗑️ Tout effacé - localStorage vide');
                         generateStats();
-                        generateCalendar();
-                        showClientDetails(session.client); // Refresh la modale
-                        
-                        alert(`✅ Séance modifiée et sauvegardée !${enableReminder ? '\n🔔 Notifications activées pour cette séance.' : ''}`);
+                        alert('✅ Toutes les données effacées !\nLocalStorage vidé.\nVous repartez de zéro.');
+                    } else {
+                        updateDebugInfo('❌ Échec effacement localStorage');
+                        alert('❌ Erreur lors de l\'effacement');
                     }
+                } catch (error) {
+                    alert(`❌ Erreur: ${error.message}`);
                 }
             }
+        }
+
+        // Exporter les données
+        function exportData() {
+            const data = { sessions: sessions, exportDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `coaching-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('📤 Sauvegarde exportée !');
         }
 
         // Formater une date
@@ -1095,511 +541,66 @@
             return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
         }
 
-        // Afficher les détails d'une journée
-        function showDayDetails(date) {
-            const daySessions = sessions.filter(s => s.date === date);
-            if (daySessions.length === 0) return;
-            
-            const sessionDate = new Date(date);
-            const dateStr = sessionDate.getDate() + '/' + (sessionDate.getMonth() + 1) + '/' + sessionDate.getFullYear();
-            
-            let message = `📅 Séances du ${dateStr}:\n\n`;
-            daySessions.forEach((session, i) => {
-                message += `${i+1}. ${session.client} à ${session.time} (${session.type})\n`;
-            });
-            
-            alert(message);
-        }
-
-        // Gestion des menus déroulants
-        function toggleDropdown(menuId) {
-            const menu = document.getElementById(menuId);
-            const isVisible = menu.classList.contains('show');
-            
-            // Fermer tous les autres menus
-            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-            
-            // Toggle le menu actuel
-            if (!isVisible) {
-                menu.classList.add('show');
-            }
-        }
-
-        // Fermer les menus quand on clique ailleurs
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.dropdown')) {
-                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-            }
-        });
-
-        // Nouvelles fonctions pour les menus
-        function openSessionModal() {
-            document.getElementById('sessionModal').style.display = 'block';
-            document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
-            toggleDropdown('sessionsMenu');
-        }
-
-        function openRecurringModal() {
-            document.getElementById('recurringModal').style.display = 'block';
-            document.getElementById('startRecurring').value = new Date().toISOString().split('T')[0];
-            toggleDropdown('sessionsMenu');
-        }
-
-        function showTodaySessions() {
-            const today = new Date().toISOString().split('T')[0];
-            const todaySessions = sessions.filter(s => s.date === today);
-            
-            if (todaySessions.length === 0) {
-                alert('📅 Aucune séance prévue aujourd\'hui');
-            } else {
-                const sessionsList = todaySessions.map(s => `• ${s.client} à ${s.time} (${s.type})`).join('\n');
-                alert(`📅 Séances d'aujourd'hui :\n\n${sessionsList}`);
-            }
-            toggleDropdown('sessionsMenu');
-        }
-
-        function applyDateFilter() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            
-            if (startDate && endDate) {
-                dateFilter.start = new Date(startDate);
-                dateFilter.end = new Date(endDate);
-                generateStats();
-                alert(`📊 Filtre appliqué du ${formatDate(startDate)} au ${formatDate(endDate)}`);
-            } else {
-                alert('⚠️ Veuillez sélectionner une date de début et de fin');
-            }
-            toggleDropdown('filterMenu');
-        }
-
-        function clearFilters() {
-            dateFilter.start = null;
-            dateFilter.end = null;
-            filteredClient = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            document.getElementById('clientSearch').value = '';
-            generateStats();
-            generateCalendar();
-            alert('🧹 Tous les filtres ont été effacés');
-            toggleDropdown('filterMenu');
-        }
-
-        function showAllClients() {
-            const clientStats = getClientStats();
-            const clientList = Object.keys(clientStats).map(client => {
-                const stats = clientStats[client];
-                return `• ${client}: ${stats.total} séances (${stats.currentCycle}/10)`;
-            }).join('\n');
-            
-            alert(`👥 Tous vos clients :\n\n${clientList}`);
-            toggleDropdown('filterMenu');
-        }
-
-        function showPaymentHistory() {
-            if (payments.length === 0) {
-                alert('📜 Aucun paiement enregistré pour le moment.');
-                toggleDropdown('filterMenu');
-                return;
-            }
-            
-            // Trier les paiements par date décroissante
-            const sortedPayments = [...payments].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            let message = '📜 HISTORIQUE DES PAIEMENTS :\n\n';
-            
-            sortedPayments.forEach(payment => {
-                message += `• ${payment.client} - ${formatDate(payment.date)}\n`;
-                message += `  Cycle ${payment.cycle} | Montant: ${payment.amount}\n\n`;
-            });
-            
-            // Statistiques globales
-            const totalPayments = payments.length;
-            const totalAmount = payments.reduce((sum, p) => {
-                const amount = parseFloat(p.amount) || 0;
-                return sum + amount;
-            }, 0);
-            
-            message += `📊 RÉSUMÉ :\n`;
-            message += `Total paiements: ${totalPayments}\n`;
-            if (totalAmount > 0) {
-                message += `Montant total: ${totalAmount}€`;
-            }
-            
-            alert(message);
-            toggleDropdown('filterMenu');
-        }
-
-        // Debug du système de sauvegarde
-        function debugStorage() {
-            try {
-                const saved = localStorage.getItem('coachingManagerData');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    const message = `🔧 DEBUG SAUVEGARDE :\n\n` +
-                        `✅ LocalStorage: FONCTIONNE\n` +
-                        `📊 Séances sauvées: ${data.sessions ? data.sessions.length : 0}\n` +
-                        `🔄 Récurrences: ${data.recurringSessions ? data.recurringSessions.length : 0}\n` +
-                        `💰 Paiements: ${data.payments ? data.payments.length : 0}\n` +
-                        `🕐 Dernière sauvegarde: ${data.lastSaved || 'N/A'}\n\n` +
-                        `📝 Séances actuelles en mémoire: ${sessions.length}\n` +
-                        `📅 Dernière séance: ${sessions.length > 0 ? sessions[sessions.length - 1].date : 'Aucune'}`;
-                    
-                    alert(message);
-                } else {
-                    alert('❌ DEBUG: Aucune donnée trouvée dans localStorage\n\nCela peut signifier :\n- Première utilisation\n- Données effacées\n- Problème de navigateur');
-                }
-            } catch (error) {
-                alert(`❌ DEBUG: Erreur localStorage\n\n${error.message}\n\nVotre navigateur ne supporte peut-être pas localStorage.`);
-            }
-            toggleDropdown('filterMenu');
-        }
-
-        // Effacer complètement toutes les données
-        function clearAllData() {
-            if (confirm('🗑️ EFFACER COMPLÈTEMENT TOUTES LES DONNÉES ?\n\nCette action :\n✅ Supprime tout de localStorage\n✅ Vide toutes les séances\n✅ Vide tous les paiements\n✅ Repart de zéro\n\nC\'est irréversible !')) {
-                try {
-                    // Effacer localStorage
-                    localStorage.removeItem('coachingManagerData');
-                    
-                    // Vider toutes les variables
-                    sessions = [];
-                    recurringSessions = [];
-                    payments = [];
-                    notificationsEnabled = false;
-                    
-                    // Regénérer l'affichage vide
-                    generateStats();
-                    generateCalendar();
-                    
-                    console.log('🗑️ Toutes les données effacées');
-                    alert('🗑️ Toutes les données ont été définitivement effacées !\nVous repartez avec un site vierge.');
-                } catch (error) {
-                    alert('❌ Erreur lors de l\'effacement');
-                }
-            }
-            toggleDropdown('filterMenu');
-        }
-
-        function showPaymentsDue() {
-            const clientStats = getClientStats();
-            let message = '';
-            let hasPaymentsDue = false;
-            let hasUnpaidCycles = false;
-            
-            // Paiements du cycle actuel (10e séance atteinte)
-            const paymentsDue = Object.keys(clientStats).filter(client => 
-                clientStats[client].currentCycle === 10
-            );
-            
-            if (paymentsDue.length > 0) {
-                hasPaymentsDue = true;
-                message += '💰 PAIEMENTS DUS (cycle actuel) :\n\n';
-                paymentsDue.forEach(client => {
-                    message += `• ${client} (10/10 séances - paiement dû)\n`;
-                });
-                message += '\n';
-            }
-            
-            // Cycles précédents non payés
-            const unpaidCycles = Object.keys(clientStats).filter(client => 
-                clientStats[client].unpaidCycles > 0
-            );
-            
-            if (unpaidCycles.length > 0) {
-                hasUnpaidCycles = true;
-                message += '⚠️ PAIEMENTS EN RETARD (cycles précédents) :\n\n';
-                unpaidCycles.forEach(client => {
-                    const stats = clientStats[client];
-                    message += `• ${client} - ${stats.unpaidCycles} cycle(s) non payé(s)\n`;
-                });
-            }
-            
-            if (!hasPaymentsDue && !hasUnpaidCycles) {
-                message = '✅ Aucun paiement en attente !\nTous vos clients sont à jour.';
-            }
-            
-            alert(message);
-            toggleDropdown('filterMenu');
-        }
-
-        // Réinitialiser toutes les données
-        function resetAllData() {
-            if (confirm('⚠️ ATTENTION !\n\nEffacer TOUTES les données ?\nCette action supprimera :\n- Toutes vos séances\n- Tous vos clients\n- Toutes les récurrences\n- Tous les paiements\n\nC\'est irréversible !')) {
-                if (confirm('Êtes-vous vraiment sûr ? Cette action est définitive.')) {
-                    sessions = [];
-                    recurringSessions = [];
-                    payments = [];
-                    notificationsEnabled = false;
-                    
-                    // Recharger les données d'exemple
-                    initSampleData();
-                    generateStats();
-                    generateCalendar();
-                    
-                    alert('🧹 Données effacées ! Données d\'exemple rechargées.');
-                }
-            }
-            toggleDropdown('actionsMenu');
-        }
-
-        // Générer les séances récurrentes
-        function generateRecurringSessions() {
-            if (recurringSessions.length === 0) {
-                console.log('🔄 Aucune récurrence configurée');
-                return;
-            }
-            
-            console.log('🔄 Génération des séances récurrentes...');
-            const today = new Date();
-            const futureLimit = new Date();
-            futureLimit.setMonth(futureLimit.getMonth() + 3);
-            let newSessionsCount = 0;
-
-            recurringSessions.forEach(recurring => {
-                if (!recurring.active) return;
-
-                const startDate = new Date(recurring.startDate);
-                const endDate = recurring.endDate ? new Date(recurring.endDate) : futureLimit;
-
-                let currentDate = new Date(startDate);
-                while (currentDate.getDay() !== parseInt(recurring.day)) {
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-
-                while (currentDate <= endDate) {
-                    const dateStr = currentDate.toISOString().split('T')[0];
-                    
-                    const exists = sessions.some(s => 
-                        s.client === recurring.client && 
-                        s.date === dateStr && 
-                        s.time === recurring.time
-                    );
-
-                    if (!exists) {
-                        sessions.push({
-                            id: Date.now() + Math.random(),
-                            client: recurring.client,
-                            date: dateStr,
-                            time: recurring.time,
-                            type: recurring.type,
-                            hasReminder: true,
-                            isRecurring: true,
-                            recurringId: recurring.id
-                        });
-                        newSessionsCount++;
-                    }
-
-                    currentDate.setDate(currentDate.getDate() + 7);
-                }
-            });
-            
-            if (newSessionsCount > 0) {
-                console.log('🔄', newSessionsCount, 'nouvelles séances récurrentes générées');
-                autoSave(); // Sauvegarder après génération
-            }
-        }
-
-        // Exporter les données
-        function exportData() {
-            const data = {
-                sessions: sessions,
-                recurringSessions: recurringSessions,
-                payments: payments,
-                notificationsEnabled: notificationsEnabled,
-                exportDate: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `coaching-data-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('📤 Données exportées ! (Sauvegarde de secours recommandée)');
-            toggleDropdown('actionsMenu');
-        }
-
-        // Marquer un paiement comme reçu (NOUVEAU)
-        function markPaymentReceived(client) {
-            const stats = getClientStats()[client];
-            if (!stats || stats.currentCycle !== 10) {
-                alert('❌ Ce client n\'a pas de paiement en attente.');
-                return;
-            }
-            
-            const amount = prompt(`💰 Montant du paiement reçu de ${client} :\n(Optionnel - vous pouvez laisser vide)`, '');
-            
-            if (confirm(`Confirmer la réception du paiement de ${client} ?\nCela va remettre son cycle à 0/10.`)) {
-                // Enregistrer le paiement
-                const payment = {
-                    id: Date.now(),
-                    client: client,
-                    date: new Date().toISOString().split('T')[0],
-                    cycle: stats.completedCycles,
-                    amount: amount || 'Non spécifié',
-                    sessionCount: 10
-                };
-                
-                payments.push(payment);
-                autoSave(); // Sauvegarder immédiatement
-                
-                // Refresh l'affichage
-                generateStats();
-                showClientDetails(client); // Refresh la modale
-                
-                alert(`✅ Paiement enregistré et sauvegardé pour ${client} !\n💰 Montant: ${payment.amount}\n🔄 Cycle remis à 0/10`);
-            }
-        }
-
         function closeModal() {
-            document.getElementById('sessionModal').style.display = 'none';
-            document.getElementById('recurringModal').style.display = 'none';
+            document.getElementById('addModal').style.display = 'none';
             document.getElementById('clientModal').style.display = 'none';
         }
 
         // Event listeners
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.sessions && Array.isArray(data.sessions)) {
-                        sessions = data.sessions;
-                    }
-                    if (data.recurringSessions && Array.isArray(data.recurringSessions)) {
-                        recurringSessions = data.recurringSessions;
-                    }
-                    if (data.payments && Array.isArray(data.payments)) {
-                        payments = data.payments;
-                    }
-                    if (typeof data.notificationsEnabled === 'boolean') {
-                        notificationsEnabled = data.notificationsEnabled;
-                    }
-                    
-                    autoSave(); // Sauvegarder après import
-                    generateStats();
-                    generateCalendar();
-                    alert('📥 Données importées et sauvegardées automatiquement !');
-                } catch (error) {
-                    alert('❌ Erreur lors de l\'importation : fichier invalide');
-                }
-            };
-            reader.readAsText(file);
-        });
-
         document.getElementById('sessionForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
             const newSession = {
                 id: Date.now(),
-                client: document.getElementById('clientName').value,
+                client: document.getElementById('clientName').value.trim(),
                 date: document.getElementById('sessionDate').value,
-                time: document.getElementById('sessionTime').value,
-                type: document.getElementById('sessionType').value,
-                hasReminder: document.getElementById('enableReminder').checked
+                time: document.getElementById('sessionTime').value
             };
             
+            console.log('➕ Ajout nouvelle séance:', newSession);
             sessions.push(newSession);
-            autoSave(); // Sauvegarder immédiatement
-            generateStats();
-            generateCalendar();
-            closeModal();
             
+            // Sauvegarder IMMÉDIATEMENT
+            const saved = save();
+            
+            generateStats();
+            closeModal();
             document.getElementById('sessionForm').reset();
-            document.getElementById('enableReminder').checked = true;
             
-            alert(`✅ Séance ajoutée et sauvegardée pour ${newSession.client}${newSession.hasReminder ? ' avec rappel' : ''}`);
-        });
-
-        document.getElementById('recurringForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const newRecurring = {
-                id: Date.now(),
-                client: document.getElementById('recurringClient').value,
-                day: document.getElementById('recurringDay').value,
-                time: document.getElementById('recurringTime').value,
-                type: document.getElementById('recurringType').value,
-                startDate: document.getElementById('startRecurring').value,
-                endDate: document.getElementById('endRecurring').value || null,
-                active: true
-            };
-            
-            recurringSessions.push(newRecurring);
-            generateRecurringSessions();
-            autoSave(); // Sauvegarder immédiatement
-            generateStats();
-            generateCalendar();
-            closeModal();
-            
-            document.getElementById('recurringForm').reset();
-            
-            const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-            alert(`🔄 Séances récurrentes créées et sauvegardées pour ${newRecurring.client} tous les ${dayNames[newRecurring.day]} à ${newRecurring.time} !`);
+            if (saved) {
+                alert(`✅ Séance ajoutée ET SAUVEGARDÉE pour ${newSession.client} !\n\n🔍 Actualisez pour tester la persistance.`);
+            } else {
+                alert(`⚠️ Séance ajoutée mais SAUVEGARDE ÉCHOUÉE !\n\nLa séance disparaîtra à l'actualisation.`);
+            }
         });
 
         document.getElementById('clientSearch').addEventListener('input', (e) => {
             filteredClient = e.target.value;
             generateStats();
-            generateCalendar();
         });
 
-        document.getElementById('prevMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            generateCalendar();
-        });
-
-        document.getElementById('nextMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            generateCalendar();
-        });
-
-        document.getElementById('todayBtn').addEventListener('click', () => {
-            currentDate = new Date();
-            generateCalendar();
-        });
-
-        // Fermer les modales en cliquant à l'extérieur
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 closeModal();
             }
         });
 
-        // Vérifier les notifications toutes les minutes
-        setInterval(() => {
-            if (notificationsEnabled) {
-                checkForNotifications();
-            }
-        }, 60000); // Toutes les 60 secondes
-
-        // Initialisation
-        try {
-            initSampleData();
-            generateRecurringSessions();
-            generateStats();
-            generateCalendar();
-            console.log('✅ Application chargée avec succès');
-            
-            // Vérifier les notifications après 5 secondes
-            setTimeout(() => {
-                if (notificationsEnabled) {
-                    checkForNotifications();
-                }
-            }, 5000);
-        } catch (error) {
-            console.error('❌ Erreur:', error);
-            document.body.innerHTML = `<div style="padding: 2rem; text-align: center; color: white;"><h1>Erreur de chargement</h1><p>${error.message}</p></div>`;
+        // INITIALISATION SIMPLE
+        updateDebugInfo('🚀 Chargement...');
+        
+        // Essayer de charger les données
+        const loaded = load();
+        
+        if (!loaded) {
+            // Si pas de données, commencer avec une liste vide
+            updateDebugInfo('📝 Démarrage vierge - aucune séance');
         }
+
+        // Générer l'affichage
+        generateStats();
+        
+        console.log('🎯 Application initialisée');
+        console.log('📊 Séances en mémoire:', sessions.length);
     </script>
 </body>
 </html>
